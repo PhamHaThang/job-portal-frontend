@@ -1,10 +1,30 @@
-@import url("https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Urbanist", sans-serif;
+  --font-display: "Manrope", sans-serif;
   --breakpoint-3xl: 1920px;
-  --color-primary: #00a7f3;
+  --color-primary-50: #fef2f2;
+  --color-primary-100: #fde8e8;
+  --color-primary-200: #fbd5d5;
+  --color-primary-300: #f8b4b4;
+  --color-primary-400: #f98080;
+  --color-primary-500: #bc2626;
+  --color-primary-600: #a61b1b;
+  --color-primary-700: #911010;
+  --color-primary-800: #780a0a;
+  --color-primary-900: #610606;
+
+  --color-secondary-50: #f4f7fc;
+  --color-secondary-100: #e9eef8;
+  --color-secondary-200: #c9d6f0;
+  --color-secondary-300: #a2b5e4;
+  --color-secondary-400: #6c87d2;
+  --color-secondary-500: #051a53;
+  --color-secondary-600: #041443;
+  --color-secondary-700: #030f34;
+  --color-secondary-800: #020a25;
+  --color-secondary-900: #010516;
 }
 @layer base {
   html {
