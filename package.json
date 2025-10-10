@@ -12,7 +12,6 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.14",
     "axios": "^1.12.2",
-    "clsx": "^2.1.1",
     "framer-motion": "^12.23.22",
     "install": "^0.13.0",
     "lucide-react": "^0.545.0",

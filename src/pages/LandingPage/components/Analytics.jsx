@@ -1,6 +1,5 @@
 import { Briefcase, Target, TrendingUp, Users } from "lucide-react";
 import { motion } from "framer-motion";
-import clsx from "clsx";
 const Analytics = () => {
   const stats = [
     {
@@ -32,6 +31,24 @@ const Analytics = () => {
       color: "orange",
     },
   ];
+  const statColors = {
+    blue: {
+      icon: "text-blue-600",
+      bg: "bg-blue-100",
+    },
+    purple: {
+      icon: "text-purple-600",
+      bg: "bg-purple-100",
+    },
+    green: {
+      icon: "text-green-600",
+      bg: "bg-green-100",
+    },
+    orange: {
+      icon: "text-orange-600",
+      bg: "bg-orange-100",
+    },
+  };
   return (
     <section className="py-20 bg-white relative overflow-hidden">
       <div className="container mx-auto px-4">
@@ -63,22 +80,11 @@ const Analytics = () => {
               className="bg-white p-6 rounded-2xl shadow-lg border border-secondary-100 hover:shadow-xl transition-all  duration-300">
               <div className="flex items-center justify-between mb-4">
                 <div
-                  className={clsx(
-                    "w-12 h-12 flex items-center justify-center rounded-xl",
-                    {
-                      "bg-blue-100": stat.color === "blue",
-                      "bg-purple-100": stat.color === "purple",
-                      "bg-green-100": stat.color === "green",
-                      "bg-orange-100": stat.color === "orange",
-                    }
-                  )}>
+                  className={`w-12 h-12 flex items-center justify-center rounded-lg ${
+                    statColors[stat.color].bg
+                  }`}>
                   <stat.icon
-                    className={clsx("w-6 h-6", {
-                      "text-blue-600": stat.color === "blue",
-                      "text-purple-600": stat.color === "purple",
-                      "text-green-600": stat.color === "green",
-                      "text-orange-600": stat.color === "orange",
-                    })}
+                    className={`w-6 h-6 ${statColors[stat.color]?.icon}`}
                   />
                 </div>
                 <span className="text-green-500 text-sm font-semibold bg-green-50 px-2 py-1 rounded-full">
