@@ -1,9 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import logo from "../../../assets/logo.png";
+import { formatName } from "../../../utils/formatName";
+import useAuth from "../../../hooks/useAuth";
 const Header = () => {
-  const isAuthenticated = true;
-  const user = { fullName: "Thắng", role: "employer" };
+  const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
   return (
     <motion.header
@@ -51,7 +52,7 @@ const Header = () => {
             {isAuthenticated ? (
               <div className="flex items-center space-x-3">
                 <span className="text-secondary-700">
-                  Xin chào, {user?.fullName}
+                  Xin chào, {formatName(user?.name)}
                 </span>
                 <a
                   href={

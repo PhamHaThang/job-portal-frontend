@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import axiosInstance from "../../utils/axiosInstance";
 import {
   AlertCircle,
   CheckCircle,
@@ -10,7 +11,12 @@ import {
   Mail,
 } from "lucide-react";
 import { validateEmail, validatePassword } from "../../utils/helper";
+import { API_PATHS } from "../../utils/apiPaths";
+import useAuth from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -47,9 +53,31 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-    setFormState((prev) => ({ ...prev, loading: true }));
+    setFormState((prev) => ({ ...prev, loading: true, errors: {} }));
     try {
-      //Login
+      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+        email: formData.email,
+        password: formData.password,
+      });
+      setFormState((prev) => ({
+        ...prev,
+        loading: false,
+        success: true,
+        errors: {},
+      }));
+      const { token, user } = response.data;
+      if (!token || !user) {
+        throw new Error("Lỗi phản hồi từ server. Vui lòng thử lại.");
+      }
+      login(user, token);
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      const redirectPath =
+        user.role === "employer"
+          ? "/employer-dashboard"
+          : user.role === "jobseeker"
+          ? "/find-jobs"
+          : "/";
+      navigate(redirectPath, { replace: true });
     } catch (err) {
       setFormState((prev) => ({
         ...prev,

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { uploadImage } from "../../utils/upload";
 import {
   AlertCircle,
   Building2,
@@ -18,7 +19,11 @@ import {
   validateEmail,
   validatePassword,
 } from "../../utils/helper";
+import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
+import useAuth from "../../hooks/useAuth";
 const SignUp = () => {
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -94,8 +99,32 @@ const SignUp = () => {
     if (!validateForm()) return;
     setFormState((prev) => ({ ...prev, loading: true }));
     try {
-      console.log(formData);
-      //Sign up
+      let avatarUrl = "";
+      if (formData.avatar) {
+        const imgUploadResponse = await uploadImage(formData.avatar);
+        avatarUrl = imgUploadResponse.imageUrl || "";
+      }
+      const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
+        name: formData.fullName,
+        email: formData.email,
+        password: formData.password,
+        role: formData.role,
+        avatar: avatarUrl || "",
+      });
+      setFormState((prev) => ({
+        ...prev,
+        loading: false,
+        success: true,
+        errors: {},
+      }));
+      const { token, user: userData } = response.data;
+      if (token) {
+        login(userData, token);
+        setTimeout(() => {
+          window.location.href =
+            userData.role === "employer" ? "/employer-dashboard" : "/find-jobs";
+        }, 2000);
+      }
     } catch (err) {
       setFormState((prev) => ({
         ...prev,

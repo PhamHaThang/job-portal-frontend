@@ -99,3 +99,23 @@ export const SALARY_RANGES = [
   "30 – 50 triệu VNĐ",
   "Trên 50 triệu VNĐ",
 ];
+export const QUICK_ACTIONS = [
+  {
+    title: "Đăng việc làm mới",
+    icon: Plus,
+    color: "bg-blue-50 text-blue-700",
+    path: "/post-job",
+  },
+  {
+    title: "Quản lý việc làm",
+    icon: Users,
+    color: "bg-green-50 text-green-700",
+    path: "/manage-jobs",
+  },
+  {
+    title: "Hồ sơ công ty",
+    icon: Building2,
+    color: "bg-orange-50 text-orange-700",
+    path: "/company-profile",
+  },
+];
