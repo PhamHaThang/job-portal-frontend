@@ -1,5 +1,5 @@
 import { Briefcase } from "lucide-react";
-import { formatDate } from "../../utils/date";
+import { formatDate } from "../../utils/format";
 
 const JobDashboardCard = ({ job }) => {
   return (
@@ -11,7 +11,7 @@ const JobDashboardCard = ({ job }) => {
         <div>
           <h4 className="text-[15px] font-medium text-gray-900">{job.title}</h4>
           <p className="text-xs text-gray-500">
-            {job.location} - {formatDate(job.createAt, "DD/MM/YYYY")}
+            {job.location} - {formatDate(job.createdAt, "DD/MM/YYYY")}
           </p>
         </div>
       </div>

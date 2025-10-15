@@ -40,6 +40,7 @@ const App = () => {
         </Routes>
       </BrowserRouter>
       <Toaster
+        position="top-center"
         toastOptions={{
           className: "",
           style: {

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import logo from "../../../assets/logo.png";
-import { formatName } from "../../../utils/formatName";
+import { formatName } from "../../../utils/format";
 import useAuth from "../../../hooks/useAuth";
 const Header = () => {
   const { isAuthenticated, user } = useAuth();

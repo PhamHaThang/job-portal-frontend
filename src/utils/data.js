@@ -85,11 +85,11 @@ export const CATEGORIES = [
   { value: "Other", label: "Khác" },
 ];
 export const JOB_TYPES = [
-  { value: "Remote", label: "Làm việc từ xa" },
-  { value: "Full-Time", label: "Toàn thời gian" },
-  { value: "Part-Time", label: "Bán thời gian" },
-  { value: "Contract", label: "Hợp đồng" },
-  { value: "Internship", label: "Thực tập" },
+  { value: "Remote", label: "Remote" },
+  { value: "Full-time", label: "Full-time" },
+  { value: "Part-time", label: "Part-time" },
+  { value: "Contract", label: "Contract" },
+  { value: "Internship", label: "Internship" },
 ];
 export const SALARY_RANGES = [
   "Dưới 5 triệu VNĐ",

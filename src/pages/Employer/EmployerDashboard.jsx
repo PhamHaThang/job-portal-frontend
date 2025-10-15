@@ -5,10 +5,10 @@ import { API_PATHS } from "../../utils/apiPaths";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
 import StatCard from "../../components/ui/StatCard";
-import { Briefcase, Building2, CheckCircle2, Plus, Users } from "lucide-react";
+import { Briefcase, CheckCircle2, Users } from "lucide-react";
 import { Card } from "../../components/ui/Card";
 import JobDashboardCard from "../../components/ui/JobDashboardCard";
-import { timeFromNow } from "../../utils/date";
+import { timeFromNow } from "../../utils/format";
 import ApplicantDashboardCard from "../../components/ui/ApplicantDashboardCard";
 import { QUICK_ACTIONS } from "../../utils/data";
 

@@ -1,12 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Briefcase, Building2, LogOut, Menu, X } from "lucide-react";
+import { LogOut, Menu, X } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
 import logo from "../../assets/logo.png";
 import { NAVIGATION_MENU } from "../../utils/data";
-import { NavigationItem } from "./NavigationItem";
-import { formatName } from "../../utils/formatName";
-import ProfileDropdown from "./ProfileDropdown";
+import { NavigationItem } from "../ui/NavigationItem";
+import { formatName } from "../../utils/format";
+import ProfileDropdown from "../ui/ProfileDropdown";
 const DashboardLayout = ({ activeMenu, children }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
