@@ -125,7 +125,7 @@ const ManageJobs = () => {
           id: job._id,
           title: job.title,
           company: job?.company?.name || "N/A",
-          status: job?.isClosed ? "Đang đóng" : "Đang mở",
+          status: job?.isClosed ? "Closed" : "Active",
           applicants: job?.applicationCount || 0,
           datePosted: formatDate(job.createdAt),
           logo: job?.company?.companyLogo,
@@ -185,7 +185,7 @@ const ManageJobs = () => {
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className="block w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50/50 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500  transition-all duration-200 cursor-pointer">
+                  className="block w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50/50 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500  transition-all duration-200 cursor-pointer outline-0">
                   <option value="All">Tất cả</option>
                   <option value="Active">Mở</option>
                   <option value="Closed">Đóng</option>
@@ -269,11 +269,13 @@ const ManageJobs = () => {
                               <td className="px-6 py-4 whitespace-nowrap min-w-[120px] sm:min-w-0">
                                 <span
                                   className={`inline-flex px-3 py-1.5 text-xs font-semibold rounded-full ${
-                                    job.status === "Đang mở"
+                                    job.status === "Active"
                                       ? "bg-emerald-100 text-emerald-800 border border-emerald-200"
                                       : "bg-red-100 text-red-700 border border-red-200"
                                   }`}>
-                                  {job.status}
+                                  {job.status === "Active"
+                                    ? "Đang mở"
+                                    : "Đang đóng"}
                                 </span>
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap min-w-[130px] sm:min-w-0">
@@ -299,7 +301,7 @@ const ManageJobs = () => {
                                     }>
                                     <Edit className="w-4 h-4" />
                                   </button>
-                                  {job.status === "Đang mở" ? (
+                                  {job.status === "Active" ? (
                                     <button
                                       className="flex items-center gap-2 text-xs text-orange-600 hover:text-orange-800 transition-colors duration-200 hover:bg-orange-50 p-2 rounded-lg cursor-pointer"
                                       onClick={() =>

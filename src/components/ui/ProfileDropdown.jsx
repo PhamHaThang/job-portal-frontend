@@ -24,7 +24,7 @@ const ProfileDropdown = ({
             className="h-9 w-9 object-cover rounded-full"
           />
         ) : (
-          <Avatar name={companyName} />
+          <Avatar name={companyName} size={36} />
         )}
         <div className="hidden sm:block text-left">
           <p className="text-sm font-medium text-gray-900">{companyName}</p>
