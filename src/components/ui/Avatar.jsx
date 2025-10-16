@@ -7,7 +7,7 @@ const Avatar = ({ name, size = 40, className }) => {
 
   return (
     <div
-      className={`h-8 w-8  bg-primary-500 flex items-center justify-center rounded-full ${className}`}
+      className={`h-8 w-8 bg-primary-500 flex items-center justify-center rounded-full ${className}`}
       style={{ width: size, height: size }}>
       <span className="text-white font-semibold text-xl">
         {getInitial(name)}
