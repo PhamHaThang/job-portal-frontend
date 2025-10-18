@@ -1,6 +1,6 @@
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import { Save, X } from "lucide-react";
-const EditProfileDetaials = ({
+const EditProfileDetails = ({
   formData,
   handleInputChange,
   handleImageChange,
@@ -178,4 +178,4 @@ const EditProfileDetaials = ({
   );
 };
 
-export default EditProfileDetaials;
+export default EditProfileDetails;

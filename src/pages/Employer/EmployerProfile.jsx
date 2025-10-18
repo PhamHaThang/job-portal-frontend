@@ -7,7 +7,7 @@ import { API_PATHS } from "../../utils/apiPaths";
 import toast from "react-hot-toast";
 import { uploadImage } from "../../utils/upload";
 import Avatar from "../../components/ui/Avatar";
-import EditProfileDetaials from "./EditProfileDetaials";
+import EditProfileDetails from "./EditProfileDetails";
 const EmployerProfile = () => {
   const { user, updateUser } = useAuth();
   const [profileData, setProfileData] = useState({
@@ -76,7 +76,7 @@ const EmployerProfile = () => {
   };
   if (editMode) {
     return (
-      <EditProfileDetaials
+      <EditProfileDetails
         formData={formData}
         handleInputChange={handleInputChange}
         handleImageChange={handleImageChange}

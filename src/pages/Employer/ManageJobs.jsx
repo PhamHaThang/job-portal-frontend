@@ -124,7 +124,7 @@ const ManageJobs = () => {
         const formattedJobs = response.data?.jobs?.map((job) => ({
           id: job._id,
           title: job.title,
-          company: job?.company?.name || "N/A",
+          company: job?.company?.name || "Chưa xác định",
           status: job?.isClosed ? "Closed" : "Active",
           applicants: job?.applicationCount || 0,
           datePosted: formatDate(job.createdAt),

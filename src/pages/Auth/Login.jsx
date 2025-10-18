@@ -70,7 +70,7 @@ const Login = () => {
         throw new Error("Lỗi phản hồi từ server. Vui lòng thử lại.");
       }
       login(user, token);
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       const redirectPath =
         user.role === "employer"
           ? "/employer-dashboard"

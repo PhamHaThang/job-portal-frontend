@@ -40,18 +40,20 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                 <div className="flex items-start justify-between mb-0">
                   <div className="flex-1">
                     <h1 className="text-lg lg:text-xl font-semibold mb-2 leading-tight text-gray-900">
-                      {formData.jobTitle}
+                      {formData.jobTitle || "Tiêu đề công việc"}
                     </h1>
                     <div className="flex items-center space-x-4 text-gray-600">
                       <div className="flex items-center space-x-2">
                         <MapPin className="h-4 w-4" />
                         <span className="text-sm font-medium">
-                          {formData.isRemote ? "Remote" : formData.location}
+                          {formData.isRemote
+                            ? "Remote"
+                            : formData.location || "Địa điểm không xác định"}
                         </span>
                         {formData.isRemote && formData.location && (
                           <span className="text-sm text-gray-500">
                             {" "}
-                            - {formData.location}
+                            - {formData.location || "Địa điểm không xác định"}
                           </span>
                         )}
                       </div>
@@ -71,16 +73,12 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                 </div>
                 <div className="flex flex-wrap gap-3 mt-6 md:mt-0">
                   <span className="px-4 py-2 bg-blue-50 text-sm text-blue-700 font-semibold rounded-full border border-blue-200">
-                    {
-                      CATEGORIES.find((c) => c.value === formData.category)
-                        ?.label
-                    }
+                    {CATEGORIES.find((c) => c.value === formData.category)
+                      ?.label || "Chưa xác định"}
                   </span>
                   <span className="px-4 py-2 bg-purple-50 text-sm text-purple-700 font-semibold rounded-full border border-purple-200">
-                    {
-                      JOB_TYPES.find((jt) => jt.value === formData.jobType)
-                        ?.label
-                    }
+                    {JOB_TYPES.find((jt) => jt.value === formData.jobType)
+                      ?.label || "Chưa xác định"}
                   </span>
                   <div className="flex items-center space-x-1 px-4 py-2 bg-gray-50 text-sm text-gray-600 font-semibold rounded-full border border-gray-200">
                     <Clock className="h-4 w-4 " />
@@ -101,7 +99,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                       </div>
                       <div>
                         <h3 className="text-sm font-semibold text-gray-900 mb-1">
-                          Tiền lương cơ bản
+                          Lương cơ bản
                         </h3>
                         <div className="text-sm md:text-lg font-bold text-gray-900">
                           {formatCurrency(formData.salaryMin)}
@@ -115,7 +113,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                     </div>
                     <div className="hidden md:flex items-center space-x-2 text-sm text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">
                       <Users className="h-4 w-4" />
-                      <span>Lương cơ bản</span>
+                      <span>Thỏa thuận</span>
                     </div>
                   </div>
                 </div>
@@ -127,7 +125,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                 </h3>
                 <div className="bg-gray-50 border border-gray-100 rounded-xl p-6">
                   <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
-                    {formData.description}
+                    {formData.description || "Chưa có mô tả công việc"}
                   </div>
                 </div>
               </div>
@@ -140,7 +138,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                 </h3>
                 <div className="bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-50 rounded-xl p-6">
                   <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
-                    {formData.requirements}
+                    {formData.requirements || "Chưa có yêu cầu công việc"}
                   </div>
                 </div>
               </div>

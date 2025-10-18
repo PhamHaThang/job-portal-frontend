@@ -27,9 +27,9 @@ export const API_PATHS = {
     DELETE_JOB: (jobId) => `/jobs/${jobId}`, // EMPLOYER
     TOGGLE_CLOSE: (jobId) => `/jobs/${jobId}/toggle-close`, // EMPLOYER
 
-    SAVE_JOB: (jobId) => `/save-jobs/${jobId}`, // JOBSEEKER
-    UNSAVE_JOB: (jobId) => `/save-jobs/${jobId}`, // JOBSEEKER
-    GET_SAVED_JOBS: "/save-jobs/my", // JOBSEEKER
+    SAVE_JOB: (jobId) => `/saved-jobs/${jobId}`, // JOBSEEKER
+    UNSAVE_JOB: (jobId) => `/saved-jobs/${jobId}`, // JOBSEEKER
+    GET_SAVED_JOBS: "/saved-jobs/my", // JOBSEEKER
   },
   APPLICATIONS: {
     APPLY_JOB: (jobId) => `/applications/${jobId}`,

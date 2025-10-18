@@ -39,3 +39,18 @@ export const timeFromNow = (dateString) => {
 
   return date.toLocaleDateString("vi-VN");
 };
+export const formatSalary = (min, max) => {
+  const formatNumber = (num) => {
+    if (num >= 1_000_000_000)
+      return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, "") + " tỷ";
+    if (num >= 1_000_000)
+      return (num / 1_000_000).toFixed(1).replace(/\.0$/, "") + " triệu";
+    if (num >= 1_000) return (num / 1_000).toFixed(0) + " nghìn";
+    return num + " đ";
+  };
+
+  if (min && max) return `${formatNumber(min)} - ${formatNumber(max)} VNĐ`;
+  if (min) return `Từ ${formatNumber(min)} VNĐ`;
+  if (max) return `Đến ${formatNumber(max)} VNĐ`;
+  return "Thỏa thuận";
+};
