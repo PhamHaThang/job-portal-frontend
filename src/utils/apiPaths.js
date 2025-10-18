@@ -9,6 +9,9 @@ export const API_PATHS = {
     UPDATE_PROFILE: "/user/profile",
     GET_PUBLIC_PROFILE: (userId) => `/user/profile/${userId}`,
     DELETE_RESUME: "/user/resume", // JOBSEEKER
+    CHANGE_PASSWORD: "/user/change-password",
+    FORGET_PASSWORD: "/auth/forgot-password",
+    RESET_PASSWORD: "/auth/reset-password",
   },
   DASHBOARD: {
     OVERVIEW: "/analytics/overview", // EMPLOYER

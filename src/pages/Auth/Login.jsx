@@ -38,6 +38,10 @@ const Login = () => {
         errors: { ...prev.errors, [name]: null },
       }));
     }
+    setFormState((prev) => ({
+      ...prev,
+      errors: { ...prev.errors, submit: null },
+    }));
   };
   const validateForm = () => {
     const errors = {
@@ -125,7 +129,8 @@ const Login = () => {
             Đăng nhập vào tài khoản của bạn{" "}
           </p>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-6">
+
+        <form onSubmit={handleSubmit} className="space-y-6 ">
           <div>
             <label className="block text-sm font-medium text-secondary-700 mb-2">
               Địa chỉ Email
@@ -150,7 +155,7 @@ const Login = () => {
               </p>
             )}
           </div>
-          <div>
+          <div className="mb-0">
             <label className="block text-sm font-medium text-secondary-700 mb-2">
               Mật khẩu
             </label>
@@ -191,8 +196,15 @@ const Login = () => {
               </p>
             )}
           </div>
+          <div className="text-right my-3">
+            <a
+              href="/forget-password"
+              className=" text-primary-600 text-sm hover:text-primary-700">
+              Quên mật khẩu?
+            </a>
+          </div>
           {formState.errors.submit && (
-            <div className="bg-red-50 border border-red-200 p-3 rounded-lg">
+            <div className="my-2 bg-red-50 border border-red-200 p-3 rounded-lg">
               <p className="text-red-700 text-sm flex items-center">
                 <AlertCircle className="w-4 h-4 mr-2" />
                 {formState.errors.submit}
@@ -212,6 +224,7 @@ const Login = () => {
               <span>Đăng nhập</span>
             )}
           </button>
+
           <div className="text-center">
             <p className="text-secondary-600">
               Chưa có tài khoản?{" "}

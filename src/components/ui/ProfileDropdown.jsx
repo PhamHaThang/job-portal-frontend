@@ -49,6 +49,17 @@ const ProfileDropdown = ({
             className="block px-4 py-2 mt-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors duration-200">
             Hồ sơ của tôi
           </a>
+          <a
+            onClick={() =>
+              navigate(
+                userRole === "jobseeker"
+                  ? "/change-password"
+                  : "/company-change-password"
+              )
+            }
+            className="block px-4 py-2 mt-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors duration-200">
+            Đổi mật khẩu
+          </a>
           <div className="border-t border-gray-100 mt-2 pt-2">
             <a
               href="#"
