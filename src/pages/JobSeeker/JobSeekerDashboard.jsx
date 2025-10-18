@@ -209,7 +209,7 @@ const JobSeekerDashboard = () => {
     return <LoadingSpinner />;
   }
   return (
-    <div className="bg-gradient-to-br from-primary-50 via-white to-secondary-50">
+    <div className="bg-gradient-to-br from-primary-50 via-white to-purple-50 min-h-screen">
       <Navbar />
       <div className="min-h-screen mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-8">
@@ -296,8 +296,8 @@ const JobSeekerDashboard = () => {
                   <div
                     className={
                       viewMode === "grid"
-                        ? "grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-2 lg:gap-6"
-                        : "space-x-4 lg:space-x-6 flex flex-col gap-2 lg:gap-6"
+                        ? "grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-4 lg:gap-6"
+                        : "space-y-4 lg:space-y-6"
                     }>
                     {jobs.map((job) => (
                       <JobCard

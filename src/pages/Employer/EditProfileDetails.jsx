@@ -4,7 +4,7 @@ const EditProfileDetails = ({
   formData,
   handleInputChange,
   handleImageChange,
-  uploading,
+  pendingFiles,
   handleSave,
   handleCancel,
   saving,
@@ -27,35 +27,41 @@ const EditProfileDetails = ({
                       Thông tin cá nhân
                     </h2>
 
-                    <div className="flex items-center space-x-4">
-                      <div className="relative">
-                        <img
-                          src={formData?.avatar}
-                          alt="Avatar"
-                          className="w-20 h-20 rounded-full object-cover border-4 border-gray-200"
-                        />
-                        {uploading?.avatar && (
-                          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-full">
-                            <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                          </div>
-                        )}
-                      </div>
-                      <div>
-                        <label className="block">
-                          <span className="sr-only">Chọn ảnh đại diện</span>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Ảnh đại diện
+                      </label>
+                      <div className="flex items-center space-x-4">
+                        <div className="relative">
+                          {formData?.avatar ? (
+                            <img
+                              src={formData.avatar}
+                              alt="Avatar"
+                              className="w-20 h-20 rounded-full object-cover border-4 border-gray-200"
+                            />
+                          ) : (
+                            <Avatar
+                              className="border-4 border-gray-200"
+                              size={80}
+                              name={formData?.name}
+                            />
+                          )}
+                        </div>
+                        <div className="flex-1">
                           <input
                             type="file"
                             accept="image/*"
                             onChange={(e) => handleImageChange(e, "avatar")}
                             className="block w-full file:mr-4 file:py-2 file:px-4
-                            file:rounded-full file:border-0
-                            file:text-sm file:font-semibold
-                            file:bg-primary-50 file:text-primary-700
-                            hover:file:bg-primary-100 transition-colors cursor-pointer file:cursor-pointer"
+                              file:rounded-full file:border-0
+                              file:text-sm file:font-semibold
+                              file:bg-primary-50 file:text-primary-700
+                              hover:file:bg-primary-100 transition-colors cursor-pointer file:cursor-pointer"
                           />
-                        </label>
+                        </div>
                       </div>
                     </div>
+
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Tên đầy đủ
@@ -86,33 +92,38 @@ const EditProfileDetails = ({
                     <h2 className="text-lg font-medium text-gray-800 border-b pb-2">
                       Thông tin công ty
                     </h2>
-                    <div className="flex items-center space-x-4">
-                      <div className="relative">
-                        <img
-                          src={formData?.companyLogo}
-                          alt="Company Logo"
-                          className="w-20 h-20 rounded-lg object-cover border-4 border-gray-200"
-                        />
-                        {uploading?.logo && (
-                          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg">
-                            <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                          </div>
-                        )}
-                      </div>
-                      <div>
-                        <label className="block">
-                          <span className="sr-only">Chọn logo công ty</span>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Logo công ty
+                      </label>
+                      <div className="flex items-center space-x-4">
+                        <div className="relative">
+                          {formData?.companyLogo ? (
+                            <img
+                              src={formData.companyLogo}
+                              alt="Company Logo"
+                              className="w-20 h-20 rounded-lg object-cover border-4 border-gray-200"
+                            />
+                          ) : (
+                            <Avatar
+                              className="border-4 border-gray-200 rounded-lg"
+                              size={80}
+                              name={formData?.companyName}
+                            />
+                          )}
+                        </div>
+                        <div className="flex-1">
                           <input
                             type="file"
                             accept="image/*"
                             onChange={(e) => handleImageChange(e, "logo")}
                             className="block w-full file:mr-4 file:py-2 file:px-4
-                            file:rounded-full file:border-0
-                            file:text-sm file:font-semibold
-                            file:bg-primary-50 file:text-primary-700
-                            hover:file:bg-primary-100 transition-colors cursor-pointer file:cursor-pointer"
+                              file:rounded-full file:border-0
+                              file:text-sm file:font-semibold
+                              file:bg-primary-50 file:text-primary-700
+                              hover:file:bg-primary-100 transition-colors cursor-pointer file:cursor-pointer"
                           />
-                        </label>
+                        </div>
                       </div>
                     </div>
 
@@ -142,7 +153,7 @@ const EditProfileDetails = ({
                             e.target.value
                           )
                         }
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transiton-all resize-none"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transiton-all resize-y"
                         placeholder="Nhập mô tả công ty"
                         rows={4}
                       />
@@ -160,7 +171,7 @@ const EditProfileDetails = ({
                   <button
                     onClick={handleSave}
                     className="px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transtion-colors flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-                    disabled={saving || uploading.avatar || uploading.logo}>
+                    disabled={saving}>
                     {saving ? (
                       <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                     ) : (

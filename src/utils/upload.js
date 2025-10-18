@@ -22,7 +22,7 @@ const uploadImage = async (imageFile) => {
 };
 const uploadPDF = async (pdfFile) => {
   const formData = new FormData();
-  formData.append("pdf", pdfFile);
+  formData.append("file", pdfFile);
   try {
     const response = await axiosInstance.post(API_PATHS.UPLOAD.PDF, formData, {
       headers: {

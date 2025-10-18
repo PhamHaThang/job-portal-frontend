@@ -20,58 +20,83 @@ const EmployerProfile = () => {
   });
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({ ...profileData });
-  const [uploading, setUploading] = useState({ avatar: false, logo: false });
+  const [pendingFiles, setPendingFiles] = useState({
+    avatar: null,
+    logo: null,
+  });
   const [saving, setSaving] = useState(false);
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
-  const handleImageUpload = async (file, type) => {
-    if (!file) return;
-    setUploading((prev) => ({ ...prev, [type]: true }));
-    try {
-      const response = await uploadImage(file);
-      const imageUrl = response?.imageUrl || "";
-      const field = type === "avatar" ? "avatar" : "companyLogo";
-      handleInputChange(field, imageUrl);
-      toast.success("Ảnh đã được tải lên thành công");
-    } catch (error) {
-      console.error("Image upload failed:", error);
-      toast.error("Tải ảnh thất bại. Vui lòng thử lại.");
-    } finally {
-      setUploading((prev) => ({ ...prev, [type]: false }));
-    }
-  };
+
   const handleImageChange = (e, type) => {
     const file = e.target.files[0];
     if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("Kích thước ảnh không được vượt quá 5MB");
+        return;
+      }
+      if (!file.type.startsWith("image/")) {
+        toast.error("Chỉ chấp nhận file ảnh");
+        return;
+      }
       const previewUrl = URL.createObjectURL(file);
       const field = type === "avatar" ? "avatar" : "companyLogo";
+      setPendingFiles((prev) => ({ ...prev, [type]: file }));
       handleInputChange(field, previewUrl);
-      handleImageUpload(file, type);
     }
   };
   const handleSave = async () => {
     setSaving(true);
     try {
+      let uploadedData = { ...formData };
+      if (pendingFiles.avatar) {
+        toast.loading("Đang tải ảnh đại diện...", { id: "avatar-upload" });
+        try {
+          const response = await uploadImage(pendingFiles.avatar);
+          uploadedData.avatar = response?.imageUrl || "";
+          toast.success("Tải ảnh đại diện thành công", { id: "avatar-upload" });
+        } catch (error) {
+          toast.error("Tải ảnh đại diện thất bại", { id: "avatar-upload" });
+          throw error;
+        }
+      }
+      if (pendingFiles.logo) {
+        toast.loading("Đang tải logo công ty...", { id: "logo-upload" });
+        try {
+          const response = await uploadImage(pendingFiles.logo);
+          uploadedData.companyLogo = response?.imageUrl || "";
+          toast.success("Tải logo công ty thành công", { id: "logo-upload" });
+        } catch (error) {
+          toast.error("Tải logo công ty thất bại", { id: "logo-upload" });
+          throw error;
+        }
+      }
+      toast.loading("Đang cập nhật hồ sơ...", { id: "profile-update" });
       const response = await axiosInstance.put(
         API_PATHS.AUTH.UPDATE_PROFILE,
-        formData
+        uploadedData
       );
       if (response.status === 200) {
-        setProfileData({ ...response.data.user });
+        setProfileData(uploadedData);
+        setFormData(uploadedData);
+        setPendingFiles({ avatar: null, logo: null });
         updateUser(response.data.user);
         setEditMode(false);
-        toast.success("Cập nhật hồ sơ thành công");
+        toast.success("Cập nhật hồ sơ thành công", { id: "profile-update" });
       }
     } catch (error) {
       console.error("Profile update failed:", error);
-      toast.error("Cập nhật hồ sơ thất bại. Vui lòng thử lại.");
+      toast.error(error?.response?.data?.message || "Cập nhật hồ sơ thất bại", {
+        id: "profile-update",
+      });
     } finally {
       setSaving(false);
     }
   };
   const handleCancel = () => {
     setFormData({ ...profileData });
+    setPendingFiles({ avatar: null, logo: null });
     setEditMode(false);
   };
   if (editMode) {
@@ -80,7 +105,7 @@ const EmployerProfile = () => {
         formData={formData}
         handleInputChange={handleInputChange}
         handleImageChange={handleImageChange}
-        uploading={uploading}
+        pendingFiles={pendingFiles}
         handleSave={handleSave}
         handleCancel={handleCancel}
         saving={saving}

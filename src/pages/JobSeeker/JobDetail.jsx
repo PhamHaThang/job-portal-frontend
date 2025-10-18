@@ -76,6 +76,18 @@ const JobDetail = () => {
       <div className="container mx-auto pt-24">
         {jobDetails && (
           <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="flex items-center gap-4 mb-8">
+              <button
+                onClick={() => navigate(-1)}
+                className="group flex items-center space-x-2 px-3.5 py-2.5 text-sm rounded-xl font-medium text-gray-600 bg-white/50 hover:text-white hover:bg-gradient-to-r hover:from-primary-500 hover:to-primary-600 border border-gray-200 hover:border-transparent shadow-lg transition-all shadow-gray-100 hover:shadow-xl
+                    transform hover:-translate-y-0.5 cursor-pointer
+                    ">
+                <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
+              </button>
+              <h1 className="text-xl font-semibold leading-tight text-gray-900">
+                Thông tin chi tiết công việc
+              </h1>
+            </div>
             <div className="relative px-0 pb-8 border-b border-gray-100">
               <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-6">
