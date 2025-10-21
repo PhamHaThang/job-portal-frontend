@@ -18,7 +18,10 @@ import ForgetPassword from "./pages/Auth/ForgetPassword";
 import ResetPassword from "./pages/Auth/ResetPassword";
 import EmployerChangePassword from "./pages/Employer/EmployerChangePassword";
 import UserChangePassword from "./pages/JobSeeker/UserChangePassword";
-
+import ResumeDashboard from "./pages/JobSeeker/ResumeDashboard";
+import EditResume from "./pages/JobSeeker/EditResume";
+import UserLayout from "./components/layout/UserLayout";
+import DashboardLayout from "./components/layout/DashboardLayout";
 const App = () => {
   return (
     <div>
@@ -30,24 +33,36 @@ const App = () => {
           <Route path="/forget-password" element={<ForgetPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
 
-          <Route path="/jobs/:jobId" element={<JobDetail />} />
-          <Route path="/find-jobs" element={<JobSeekerDashboard />} />
           <Route element={<ProtectedRoute requireRole="jobseeker" />}>
-            <Route path="/saved-jobs" element={<SavedJobs />} />
-            <Route path="/profile" element={<UserProfile />} />
-            <Route path="/change-password" element={<UserChangePassword />} />
+            <Route element={<UserLayout />}>
+              <Route path="/jobs/:jobId" element={<JobDetail />} />
+              <Route path="/find-jobs" element={<JobSeekerDashboard />} />
+              <Route path="/saved-jobs" element={<SavedJobs />} />
+              <Route path="/profile" element={<UserProfile />} />
+              <Route path="/change-password" element={<UserChangePassword />} />
+              <Route path="/resume-builder" element={<ResumeDashboard />} />
+              <Route
+                path="/resume-builder/:resumeId"
+                element={<EditResume />}
+              />
+            </Route>
           </Route>
 
           <Route element={<ProtectedRoute requireRole="employer" />}>
-            <Route path="/employer-dashboard" element={<EmployerDashboard />} />
-            <Route path="/post-job" element={<JobPostingForm />} />
-            <Route path="/manage-jobs" element={<ManageJobs />} />
-            <Route path="/applicants" element={<ApplicationViewer />} />
-            <Route path="/company-profile" element={<EmployerProfile />} />
-            <Route
-              path="/company-change-password"
-              element={<EmployerChangePassword />}
-            />
+            <Route element={<DashboardLayout />}>
+              <Route
+                path="/employer-dashboard"
+                element={<EmployerDashboard />}
+              />
+              <Route path="/post-job" element={<JobPostingForm />} />
+              <Route path="/manage-jobs" element={<ManageJobs />} />
+              <Route path="/applicants" element={<ApplicationViewer />} />
+              <Route path="/employer-profile" element={<EmployerProfile />} />
+              <Route
+                path="/employer-change-password"
+                element={<EmployerChangePassword />}
+              />
+            </Route>
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

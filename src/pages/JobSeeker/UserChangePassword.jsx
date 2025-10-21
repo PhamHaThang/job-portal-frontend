@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { Lock, Eye, EyeOff, AlertCircle, Check } from "lucide-react";
-import Navbar from "../../components/ui/Navbar";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { validatePassword } from "../../utils/helper";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-
 const UserChangePassword = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -149,86 +147,83 @@ const UserChangePassword = () => {
   );
 
   return (
-    <div className="bg-gradient-to-br from-primary-50 via-white to-purple-50 min-h-screen">
-      <Navbar />
-      <div className="min-h-screen py-8 px-4 mt-16 lg:mt-20">
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="bg-gradient-to-r from-primary-500 to-primary-600 px-8 py-6">
-              <h1 className="text-xl font-medium text-white">Đổi mật khẩu</h1>
-              <p className="text-primary-100 text-sm mt-1">
-                Cập nhật mật khẩu để bảo mật tài khoản
-              </p>
+    <div className="min-h-screen py-8 px-4 mt-16 lg:mt-20">
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div className="bg-gradient-to-r from-primary-500 to-primary-600 px-8 py-6">
+            <h1 className="text-xl font-medium text-white">Đổi mật khẩu</h1>
+            <p className="text-primary-100 text-sm mt-1">
+              Cập nhật mật khẩu để bảo mật tài khoản
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="p-8">
+            <div className="space-y-6">
+              {renderPasswordInput(
+                "currentPassword",
+                "Mật khẩu hiện tại",
+                formState.showCurrentPassword,
+                "Nhập mật khẩu hiện tại"
+              )}
+
+              {renderPasswordInput(
+                "newPassword",
+                "Mật khẩu mới",
+                formState.showNewPassword,
+                "Nhập mật khẩu mới"
+              )}
+
+              {renderPasswordInput(
+                "confirmNewPassword",
+                "Xác nhận mật khẩu mới",
+                formState.showConfirmPassword,
+                "Nhập lại mật khẩu mới"
+              )}
+
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <p className="text-sm font-medium text-blue-900 mb-2">
+                  Yêu cầu mật khẩu:
+                </p>
+                <ul className="space-y-1 text-sm text-blue-700">
+                  <li className="flex items-center">
+                    <Check className="w-4 h-4 mr-2" />
+                    Ít nhất 8 ký tự
+                  </li>
+                </ul>
+              </div>
+
+              {formState.errors.submit && (
+                <div className="bg-red-50 border border-red-200 p-4 rounded-lg">
+                  <p className="text-red-700 text-sm flex items-center">
+                    <AlertCircle className="w-4 h-4 mr-2" />
+                    {formState.errors.submit}
+                  </p>
+                </div>
+              )}
             </div>
 
-            <form onSubmit={handleSubmit} className="p-8">
-              <div className="space-y-6">
-                {renderPasswordInput(
-                  "currentPassword",
-                  "Mật khẩu hiện tại",
-                  formState.showCurrentPassword,
-                  "Nhập mật khẩu hiện tại"
+            <div className="flex justify-end space-x-4 mt-8 pt-6 border-t">
+              <button
+                type="button"
+                onClick={() => navigate("/find-jobs")}
+                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                Hủy bỏ
+              </button>
+              <button
+                type="submit"
+                disabled={formState.loading}
+                className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center space-x-2">
+                {formState.loading ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span>Đang xử lý...</span>
+                  </>
+                ) : (
+                  <span>Đổi mật khẩu</span>
                 )}
-
-                {renderPasswordInput(
-                  "newPassword",
-                  "Mật khẩu mới",
-                  formState.showNewPassword,
-                  "Nhập mật khẩu mới"
-                )}
-
-                {renderPasswordInput(
-                  "confirmNewPassword",
-                  "Xác nhận mật khẩu mới",
-                  formState.showConfirmPassword,
-                  "Nhập lại mật khẩu mới"
-                )}
-
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <p className="text-sm font-medium text-blue-900 mb-2">
-                    Yêu cầu mật khẩu:
-                  </p>
-                  <ul className="space-y-1 text-sm text-blue-700">
-                    <li className="flex items-center">
-                      <Check className="w-4 h-4 mr-2" />
-                      Ít nhất 8 ký tự
-                    </li>
-                  </ul>
-                </div>
-
-                {formState.errors.submit && (
-                  <div className="bg-red-50 border border-red-200 p-4 rounded-lg">
-                    <p className="text-red-700 text-sm flex items-center">
-                      <AlertCircle className="w-4 h-4 mr-2" />
-                      {formState.errors.submit}
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              <div className="flex justify-end space-x-4 mt-8 pt-6 border-t">
-                <button
-                  type="button"
-                  onClick={() => navigate("/find-jobs")}
-                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
-                  Hủy bỏ
-                </button>
-                <button
-                  type="submit"
-                  disabled={formState.loading}
-                  className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center space-x-2">
-                  {formState.loading ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      <span>Đang xử lý...</span>
-                    </>
-                  ) : (
-                    <span>Đổi mật khẩu</span>
-                  )}
-                </button>
-              </div>
-            </form>
-          </div>
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

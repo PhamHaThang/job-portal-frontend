@@ -1,4 +1,3 @@
-import DashboardLayout from "../../components/layout/DashboardLayout";
 import { useState } from "react";
 import { Building2, Mail, Edit3 } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
@@ -113,7 +112,7 @@ const EmployerProfile = () => {
     );
   }
   return (
-    <DashboardLayout activeMenu="company-profile">
+    <>
       <div className="min-h-screen bg-gray-50 py-8 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white shadow-lg rounded-xl overflow-hidden">
@@ -202,7 +201,7 @@ const EmployerProfile = () => {
           </div>
         </div>
       </div>
-    </DashboardLayout>
+    </>
   );
 };
 

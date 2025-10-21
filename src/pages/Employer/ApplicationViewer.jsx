@@ -1,5 +1,4 @@
-import DashboardLayout from "../../components/layout/DashboardLayout";
-import { useState, useEffect, useMemo, use } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   Users,
   Calendar,
@@ -64,7 +63,7 @@ const ApplicationViewer = () => {
     window.open(url, "_blank");
   };
   return (
-    <DashboardLayout activeMenu="manage-jobs">
+    <>
       {loading && (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="text-center">
@@ -220,7 +219,7 @@ const ApplicationViewer = () => {
             }}></ApplicantProfileReview>
         )}
       </div>
-    </DashboardLayout>
+    </>
   );
 };
 

@@ -42,4 +42,11 @@ export const API_PATHS = {
     UPDATE_APPLICATION_STATUS: (applicationId) =>
       `/applications/${applicationId}/status`, // EMPLOYER
   },
+  RESUMES: {
+    CREATE_RESUME: "/resumes", // JOBSEEKER
+    GET_MY_RESUMES: "/resumes", // JOBSEEKER
+    GET_RESUME_BY_ID: (resumeId) => `/resumes/${resumeId}`,
+    UPDATE_RESUME: (resumeId) => `/resumes/${resumeId}`, // JOBSEEKER
+    DELETE_RESUME: (resumeId) => `/resumes/${resumeId}`, // JOBSEEKER
+  },
 };

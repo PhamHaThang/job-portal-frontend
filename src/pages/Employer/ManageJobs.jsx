@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import DashboardLayout from "../../components/layout/DashboardLayout";
 import { useEffect, useMemo, useState } from "react";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
@@ -146,7 +145,7 @@ const ManageJobs = () => {
     getPostedJobs();
   }, []);
   return (
-    <DashboardLayout activeMenu="manage-jobs">
+    <>
       <div className="min-h-screen p-4 sm:p-6 lg:p-8">
         <div className="max-w-7xl mx-auto">
           <div className="mb-8">
@@ -418,7 +417,7 @@ const ManageJobs = () => {
           </div>
         </div>
       </div>
-    </DashboardLayout>
+    </>
   );
 };
 

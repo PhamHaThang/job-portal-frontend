@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosIntance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
-import DashboardLayout from "../../components/layout/DashboardLayout";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
 import StatCard from "../../components/ui/StatCard";
 import { Briefcase, CheckCircle2, Users } from "lucide-react";
@@ -33,7 +32,7 @@ const EmployerDashboard = () => {
     getDashboardOverview();
   }, []);
   return (
-    <DashboardLayout activeMenu="employer-dashboard">
+    <>
       {isLoading ? (
         <LoadingSpinner />
       ) : (
@@ -133,7 +132,7 @@ const EmployerDashboard = () => {
           </Card>
         </div>
       )}
-    </DashboardLayout>
+    </>
   );
 };
 

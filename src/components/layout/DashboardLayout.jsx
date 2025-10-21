@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { LogOut, Menu, X } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
@@ -7,13 +7,28 @@ import { NAVIGATION_MENU } from "../../utils/data";
 import { NavigationItem } from "../ui/NavigationItem";
 import { formatName } from "../../utils/format";
 import ProfileDropdown from "../ui/ProfileDropdown";
-const DashboardLayout = ({ activeMenu, children }) => {
+const DashboardLayout = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [activeNavItem, setActiveNavItem] = useState(activeMenu || "dashboard");
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const getActiveNavItem = () => {
+    const path = location.pathname;
+    if (path === "/employer-dashboard") return "employer-dashboard";
+    if (path.startsWith("/post-job")) return "post-job";
+    if (path.startsWith("/manage-jobs") || path.startsWith("/applicants"))
+      return "manage-jobs";
+    if (path.startsWith("/employer-profile")) return "employer-profile";
+    if (path.startsWith("/employer-change-password"))
+      return "employer-change-password";
+    return "employer-dashboard";
+  };
+  const [activeNavItem, setActiveNavItem] = useState(getActiveNavItem());
+  useEffect(() => {
+    setActiveNavItem(getActiveNavItem());
+  }, [location.pathname]);
   useEffect(() => {
     const handleResize = () => {
       const mobile = window.innerWidth < 768;
@@ -87,7 +102,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
         <div className="absolute bottom-4 left-4 right-4 cur ">
           <button
             className="w-full flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-50
-            hover:text-gray-900 transition-all duration-200"
+            hover:text-gray-900 transition-all duration-200 cursor-pointer"
             onClick={logout}>
             <LogOut className="h-5 w-5 flex-shrink-0 text-gray-500" />
             {!sidebarCollapsed && <span className="ml-3">Đăng xuất</span>}
@@ -143,7 +158,9 @@ const DashboardLayout = ({ activeMenu, children }) => {
             />
           </div>
         </header>
-        <main className="flex-1 overflow-auto p-6">{children}</main>
+        <main className="flex-1 overflow-auto p-6">
+          <Outlet />
+        </main>
       </div>
     </div>
   );

@@ -1,16 +1,14 @@
-import DashboardLayout from "../../components/layout/DashboardLayout";
 import { Save, X } from "lucide-react";
 const EditProfileDetails = ({
   formData,
   handleInputChange,
   handleImageChange,
-  pendingFiles,
   handleSave,
   handleCancel,
   saving,
 }) => {
   return (
-    <DashboardLayout activeMenu="company-profile">
+    <>
       {formData && (
         <div className="min-h-screen bg-gray-50 py-8 px-4">
           <div className="max-w-4xl mx-auto ">
@@ -185,7 +183,7 @@ const EditProfileDetails = ({
           </div>
         </div>
       )}
-    </DashboardLayout>
+    </>
   );
 };
 

@@ -12,7 +12,9 @@ import {
   Shield,
   Users,
 } from "lucide-react";
-
+import TEMPLATE_ONE_IMG from "../assets/resume-templates/template-01.png";
+import TEMPLATE_TWO_IMG from "../assets/resume-templates/template-02.png";
+import TEMPLATE_THREE_IMG from "../assets/resume-templates/template-03.png";
 export const jobSeekerFeatures = [
   {
     icon: Search,
@@ -69,7 +71,8 @@ export const NAVIGATION_MENU = [
   { id: "employer-dashboard", title: "Dashboard", icon: LayoutDashboard },
   { id: "post-job", title: "Đăng tin việc làm", icon: Plus },
   { id: "manage-jobs", title: "Quản lý việc làm", icon: Briefcase },
-  { id: "company-profile", title: "Hồ sơ công ty", icon: Building2 },
+  { id: "employer-profile", title: "Hồ sơ công ty", icon: Building2 },
+  { id: "employer-change-password", title: "Đổi mật khẩu", icon: Shield },
 ];
 export const CATEGORIES = [
   { value: "Engineering", label: "Kỹ thuật" },
@@ -119,3 +122,102 @@ export const QUICK_ACTIONS = [
     path: "/company-profile",
   },
 ];
+export const RESUME_TEMPLATES = [
+  { id: "01", thumbnailImg: TEMPLATE_ONE_IMG, colorPalette: "themeOne" },
+  { id: "02", thumbnailImg: TEMPLATE_TWO_IMG, colorPalette: "themeTwo" },
+  { id: "03", thumbnailImg: TEMPLATE_THREE_IMG, colorPalette: "themeThree" },
+];
+export const THEME_COLOR_PALETTES = {
+  themeOne: [
+    ["#FEF2F2", "#FEE2E2", "#FCA5A5", "#DC2626", "#374151"],
+    ["#EBFDFF", "#A1F4FD", "#CEFAFE", "#00B8DB", "#4A5565"],
+    ["#E9FBF8", "#B4EFE7", "#93E2DA", "#2AC9A0", "#3D4C5A"],
+    ["#F5F4FF", "#E0DBFF", "#C9C2F8", "#8579D1", "#484B5C"],
+    ["#F0FAFF", "#D6F0FF", "#AFDEFF", "#3399FF", "#445361"],
+    ["#FFF5F7", "#FFE0EC", "#FAC6D4", "#F6729C", "#5A5A5A"],
+    ["#F9FAFB", "#E4E7EB", "#CBD5E0", "#7F9CF5", "#2D3748"],
+    ["#F4FFFD", "#D3FDF2", "#B0E9D4", "#34C79D", "#384C48"],
+    ["#FFF7F0", "#FFE6D9", "#FFD2BA", "#FF9561", "#4C4743"],
+    ["#F9FCFF", "#E3F0F9", "#C8DDEE", "#6CA6CF", "#46545E"],
+    ["#FFFDF6", "#FFF4D7", "#FFE7A8", "#FFD000", "#57534E"],
+    ["#EFFCFF", "#C8F0FF", "#99E0FF", "#007BA7", "#2B3A42"],
+    ["#F7F7F7", "#E4E4E4", "#CFCFCF", "#4A4A4A", "#222222"],
+    ["#E3F2FD", "#98CAF9", "#A8D2F4", "#1E88E5", "#0D47A1"],
+  ],
+};
+export const DUMMY_RESUME_DATA = {
+  profileInfo: {
+    profileImg: null,
+    previewUrl: "",
+    fullName: "Hà Thắng",
+    designation: "Backend Developer",
+    summary:
+      "Là một chuyên viên phát triển phần mềm với hơn 5 năm kinh nghiệm trong việc xây dựng các ứng dụng web hiệu quả và thân thiện với người dùng.",
+  },
+  contactInfo: {
+    email: "pht@gmail.com",
+    phone: "0123456789",
+    location: "Hà Nội, Việt Nam",
+    linkedin: "https://linkedin.com/in/thanghapham",
+    github: "https://github.com/thanghapham",
+    website: "https://thanghapham.com",
+  },
+  workExperience: [
+    {
+      company: "Công ty ABC",
+      role: "Chuyên viên phát triển phần mềm",
+      startDate: "2020-01",
+      endDate: "2023-06",
+      description:
+        "Phát triển và duy trì các ứng dụng web sử dụng React và Node.js. Hợp tác với nhóm thiết kế để tạo giao diện người dùng hấp dẫn.",
+    },
+    {
+      company: "Công ty XYZ",
+      role: "Thực tập sinh phát triển phần mềm",
+      startDate: "2018-06",
+      endDate: "2019-12",
+      description:
+        "Hỗ trợ phát triển các tính năng mới cho ứng dụng di động sử dụng React Native. Tham gia vào quá trình kiểm thử và sửa lỗi.",
+    },
+  ],
+  education: [
+    {
+      degree: "Cử nhân Công nghệ Thông tin",
+      institution: "Đại học Bách Khoa Hà Nội",
+      startDate: "2014-09",
+      endDate: "2018-06",
+    },
+  ],
+  skills: [
+    { name: "JavaScript", progress: 90 },
+    { name: "React", progress: 85 },
+    { name: "Node.js", progress: 80 },
+    { name: "HTML & CSS", progress: 95 },
+  ],
+  projects: [
+    {
+      title: "Hệ thống quản lý công việc",
+      description:
+        "Phát triển một ứng dụng web giúp người dùng quản lý công việc hàng ngày với các tính năng như tạo, chỉnh sửa và xóa công việc.",
+      github: "https://github.com/thanghapham/task-manager",
+    },
+    {
+      title: "Ứng dụng ghi chú",
+      description:
+        "Xây dựng một ứng dụng ghi chú đơn giản với khả năng đồng bộ hóa dữ liệu trên nhiều thiết bị sử dụng React Native.",
+      liveDemo: "https://thanghapham.github.io/note-app",
+    },
+  ],
+  certifications: [
+    {
+      title: "Chứng chỉ Lập trình Web Toàn diện",
+      issuer: "Udemy",
+      year: "2021",
+    },
+  ],
+  languages: [
+    { name: "Tiếng Anh", progress: 90 },
+    { name: "Tiếng Việt", progress: 100 },
+  ],
+  interest: "Công nghệ, Du lịch, Đọc sách",
+};

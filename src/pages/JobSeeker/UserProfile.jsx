@@ -5,7 +5,6 @@ import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import toast from "react-hot-toast";
 import { uploadImage, uploadPDF } from "../../utils/upload";
-import Navbar from "../../components/ui/Navbar";
 import { Link } from "react-router-dom";
 import Avatar from "../../components/ui/Avatar";
 const UserProfile = () => {
@@ -144,138 +143,135 @@ const UserProfile = () => {
     return () => {};
   }, [user]);
   return (
-    <div className="bg-gradient-to-br from-primary-50 via-white to-purple-50 min-h-screen">
-      <Navbar />
-      <div className="min-h-screen bg-gray-50 py-8 px-4 mt-16 lg:m-20">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="bg-gradient-to-r from-primary-500 to-primary-600 px-8 py-6 flex justify-between ">
-              <h1 className="text-xl font-medium text-white">Hồ sơ cá nhân</h1>
-            </div>
-            <div className="p-8">
-              <div className="space-y-6">
-                <div className="flex items-center space-x-4">
-                  <div className="relative">
-                    {formData?.avatar ? (
-                      <img
-                        src={formData.avatar}
-                        alt="Avatar"
-                        className="w-20 h-20 rounded-full object-cover border-4 border-gray-200"
-                      />
-                    ) : (
-                      <Avatar
-                        className="border-4 border-gray-200"
-                        size={80}
-                        name={formData?.name}
-                      />
-                    )}
-                  </div>
-                  <div>
-                    <label className="block">
-                      <span className="sr-only">Chọn ảnh đại diện</span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        className="block w-full file:mr-4 file:py-2 file:px-4 text-gray-500
-                            file:rounded-full file:border-0
-                            file:text-sm file:font-semibold
-                            file:bg-primary-50 file:text-primary-700
-                            hover:file:bg-primary-100 transition-colors cursor-pointer file:cursor-pointer"
-                        onChange={handleImageChange}
-                      />
-                    </label>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Tên đầy đủ
-                  </label>
-                  <input
-                    type="text"
-                    value={formData?.name || ""}
-                    onChange={(e) => handleInputChange("name", e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transiton-all
-                    "
-                    placeholder="Nhập tên đầy đủ của bạn"
-                  />
+    <div className="min-h-screen  py-8 px-4 mt-16 lg:m-20">
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div className="bg-gradient-to-r from-primary-500 to-primary-600 px-8 py-6 flex justify-between ">
+            <h1 className="text-xl font-medium text-white">Hồ sơ cá nhân</h1>
+          </div>
+          <div className="p-8">
+            <div className="space-y-6">
+              <div className="flex items-center space-x-4">
+                <div className="relative">
+                  {formData?.avatar ? (
+                    <img
+                      src={formData.avatar}
+                      alt="Avatar"
+                      className="w-20 h-20 rounded-full object-cover border-4 border-gray-200"
+                    />
+                  ) : (
+                    <Avatar
+                      className="border-4 border-gray-200"
+                      size={80}
+                      name={formData?.name}
+                    />
+                  )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    disabled
-                    value={formData?.email || ""}
-                    className="w-full px-4 py-3 border border-gray-300 bg-gray-50 rounded-lg text-gray-500 cursor-not-allowed"
-                  />
-                </div>
-                {profileData.resume &&
-                !pendingDelete.resume &&
-                !pendingFiles.resume ? (
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      CV
-                    </label>
-                    <div className="flex items-center gap-2">
-                      <p className="text-sm text-gray-600">
-                        Hồ sơ hiện tại:{" "}
-                        <a
-                          href={user?.resume}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-primary-600 hover:underline cursor-pointer">
-                          Xem hồ sơ
-                        </a>
-                      </p>
-                      <button
-                        onClick={markDeleteResume}
-                        disabled={saving}
-                        className="cursor-pointer ml-4 text-red-500 hover:text-red-800 disabled:opacity-50 disabled:cursor-not-allowed">
-                        <Trash2 className="w-5 h-5" />
-                      </button>
-                    </div>
-                  </div>
-                ) : (
                   <label className="block">
-                    <span className="block text-sm font-medium text-gray-700 mb-2">
-                      Chọn hồ sơ (PDF):
-                    </span>
+                    <span className="sr-only">Chọn ảnh đại diện</span>
                     <input
                       type="file"
-                      accept="application/pdf"
+                      accept="image/*"
                       className="block w-full file:mr-4 file:py-2 file:px-4 text-gray-500
                             file:rounded-full file:border-0
                             file:text-sm file:font-semibold
                             file:bg-primary-50 file:text-primary-700
-                            hover:file:bg-primary-100 transition-colors cursor-pointer file:cursor-pointer mt-1"
-                      onChange={handleResumeChange}
+                            hover:file:bg-primary-100 transition-colors cursor-pointer file:cursor-pointer"
+                      onChange={handleImageChange}
                     />
                   </label>
-                )}
+                </div>
               </div>
-              <div className="flex justify-end space-x-4 mt-8 pt-6 border-t">
-                <Link
-                  onClick={handleCancel}
-                  to="/find-jobs"
-                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-2
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Tên đầy đủ
+                </label>
+                <input
+                  type="text"
+                  value={formData?.name || ""}
+                  onChange={(e) => handleInputChange("name", e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transiton-all
+                    "
+                  placeholder="Nhập tên đầy đủ của bạn"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  disabled
+                  value={formData?.email || ""}
+                  className="w-full px-4 py-3 border border-gray-300 bg-gray-50 rounded-lg text-gray-500 cursor-not-allowed"
+                />
+              </div>
+              {profileData.resume &&
+              !pendingDelete.resume &&
+              !pendingFiles.resume ? (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    CV
+                  </label>
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm text-gray-600">
+                      Hồ sơ hiện tại:{" "}
+                      <a
+                        href={user?.resume}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary-600 hover:underline cursor-pointer">
+                        Xem hồ sơ
+                      </a>
+                    </p>
+                    <button
+                      onClick={markDeleteResume}
+                      disabled={saving}
+                      className="cursor-pointer ml-4 text-red-500 hover:text-red-800 disabled:opacity-50 disabled:cursor-not-allowed">
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <label className="block">
+                  <span className="block text-sm font-medium text-gray-700 mb-2">
+                    Chọn hồ sơ (PDF):
+                  </span>
+                  <input
+                    type="file"
+                    accept="application/pdf"
+                    className="block w-full file:mr-4 file:py-2 file:px-4 text-gray-500
+                            file:rounded-full file:border-0
+                            file:text-sm file:font-semibold
+                            file:bg-primary-50 file:text-primary-700
+                            hover:file:bg-primary-100 transition-colors cursor-pointer file:cursor-pointer mt-1"
+                    onChange={handleResumeChange}
+                  />
+                </label>
+              )}
+            </div>
+            <div className="flex justify-end space-x-4 mt-8 pt-6 border-t">
+              <Link
+                onClick={handleCancel}
+                to="/find-jobs"
+                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-2
                 ">
-                  <X className="w-4 h-4" />
-                  <span>Hủy bỏ</span>
-                </Link>
-                <button
-                  onClick={handleSave}
-                  disabled={saving}
-                  className="px-6 py-3  text-white bg-primary-600 rounded-lg hover:bg-primary-700 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2">
-                  {saving ? (
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  ) : (
-                    <Save className="w-4 h-4" />
-                  )}
-                  <span>{saving ? "Đang lưu..." : "Cập nhật"}</span>
-                </button>
-              </div>
+                <X className="w-4 h-4" />
+                <span>Hủy bỏ</span>
+              </Link>
+              <button
+                onClick={handleSave}
+                disabled={saving}
+                className="px-6 py-3  text-white bg-primary-600 rounded-lg hover:bg-primary-700 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2">
+                {saving ? (
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                ) : (
+                  <Save className="w-4 h-4" />
+                )}
+                <span>{saving ? "Đang lưu..." : "Cập nhật"}</span>
+              </button>
             </div>
           </div>
         </div>

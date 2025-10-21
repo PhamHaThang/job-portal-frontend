@@ -1,5 +1,4 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import DashboardLayout from "../../components/layout/DashboardLayout";
 import { useEffect, useState } from "react";
 import { Briefcase, DollarSign, Eye, MapPin, Send, Users } from "lucide-react";
 import InputField from "../../components/ui/InputField";
@@ -161,13 +160,13 @@ const JobPostingForm = () => {
   };
   if (isPreview) {
     return (
-      <DashboardLayout activeMenu="post-job">
+      <>
         <JobPostingPreview formData={formData} setIsPreview={setIsPreview} />
-      </DashboardLayout>
+      </>
     );
   }
   return (
-    <DashboardLayout activeMenu="post-job">
+    <>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20 py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white shadow-xl rounded-2xl p-6">
@@ -336,7 +335,7 @@ const JobPostingForm = () => {
           </div>
         </div>
       </div>
-    </DashboardLayout>
+    </>
   );
 };
 

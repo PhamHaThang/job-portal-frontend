@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -9,6 +9,7 @@ const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const location = useLocation();
   useEffect(() => {
     const handleClickOutside = () => {
       if (profileDropdownOpen) {
@@ -20,6 +21,18 @@ const Navbar = () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [profileDropdownOpen]);
+  const isActiveRoute = (path) => {
+    if (path === "/find-jobs") {
+      return (
+        location.pathname === "/find-jobs" ||
+        location.pathname.startsWith("/jobs/")
+      );
+    }
+    if (path === "/resume-builder") {
+      return location.pathname.startsWith("/resume-builder");
+    }
+    return location.pathname === path;
+  };
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
       <div className="container mx-auto px-4">
@@ -35,12 +48,39 @@ const Navbar = () => {
               </span>
             </div>
           </Link>
+          <nav className="hidden md:flex items-center space-x-8">
+            <a
+              onClick={() => navigate("/find-jobs")}
+              className={`transition-colors cursor-pointer ${
+                isActiveRoute("/find-jobs")
+                  ? "text-primary-600 border-primary-600 font-semibold"
+                  : "text-secondary-600 hover:text-secondary-900 font-medium "
+              }`}>
+              Tìm việc
+            </a>
+
+            <a
+              onClick={() =>
+                navigate(isAuthenticated ? "/resume-builder" : "/login")
+              }
+              className={`transition-colors cursor-pointer ${
+                isActiveRoute("/resume-builder")
+                  ? "text-primary-600 border-primary-600 font-semibold"
+                  : "text-secondary-600 hover:text-secondary-900 font-medium  "
+              }`}>
+              Tạo CV
+            </a>
+          </nav>
           <div className="flex items-center space-x-3">
             {user && (
               <button
-                className="p-2 rounded-xl hover:bg-gray-100 transition-colors duration-200 relative cursor-pointer"
+                className={`p-2 rounded-xl transition-colors duration-200 relative cursor-pointer ${
+                  location.pathname === "/saved-jobs"
+                    ? " text-primary-600"
+                    : "hover:bg-gray-100 text-gray-500"
+                }`}
                 onClick={() => navigate("/saved-jobs")}>
-                <Bookmark className="h-5 w-5 text-gray-500" />
+                <Bookmark className={`h-5 w-5 `} />
               </button>
             )}
             {isAuthenticated ? (

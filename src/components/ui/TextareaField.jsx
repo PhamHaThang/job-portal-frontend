@@ -28,7 +28,7 @@ const TextareaField = ({
         rows={rows}
         className={`
             w-full
-            px-3 py-2.5 border rounded-lg text-base transition-colors
+            px-3 py-2.5 border rounded-lg text-base   transition-colors 
              duration-200
               resize-y disabled:bg-gray-50
                 disabled:text-gray-500              disabled:cursor-not-allowed
@@ -37,7 +37,7 @@ const TextareaField = ({
                 ? "border-red-300 focus:border-red-500 focus:border-ring-red-500"
                 : "border-gray-300 focus:border-primary-500 focus:ring-primary-400"
             }
-            focus:outline-none focus:ring-2 focus:ring-opacity-20`}
+            focus:outline-none focus:ring-2 focus:ring-opacity-20 `}
         style={{ minHeight: "150px" }}
         {...props}></textarea>
       {error && (

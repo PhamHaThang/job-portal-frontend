@@ -4,20 +4,12 @@ import SalaryRangeSlider from "./SalaryRangeSlider";
 import CustomCheckbox from "./CustomCheckbox";
 const FilterContent = ({
   toggleSection,
-  clearAllFilters,
   expandedSections,
   filters,
   handleFilterChange,
 }) => {
   return (
     <>
-      <div className="flex items-center justify-between mb-6 cursor-pointer">
-        <button
-          onClick={clearAllFilters}
-          className="text-primary-600 hover:text-primary-700 font-semibold text-sm cursor-pointer hover:bg-primary-50 px-3 py-1.5 rounded-lg transition-colors  ">
-          Xóa tất cả
-        </button>
-      </div>
       <FilterSection
         title="Hình thức"
         isExpanded={expandedSections?.jobType}

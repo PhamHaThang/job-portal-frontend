@@ -54,3 +54,7 @@ export const formatSalary = (min, max) => {
   if (max) return `Đến ${formatNumber(max)} VNĐ`;
   return "Thỏa thuận";
 };
+
+export const formatYearMonth = (date) => {
+  return date ? "Tháng " + moment(date, "YYYY-MM").format("M/YYYY") : "";
+};

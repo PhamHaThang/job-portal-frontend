@@ -8,8 +8,8 @@ import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
 import FilterContent from "../../components/ui/FilterContent";
 import SearchHeader from "../../components/ui/SearchHeader";
-import Navbar from "../../components/ui/Navbar";
 import JobCard from "../../components/ui/JobCard";
+import UserLayout from "../../components/layout/UserLayout";
 const JobSeekerDashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -32,6 +32,10 @@ const JobSeekerDashboard = () => {
     jobType: true,
     salary: true,
   });
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+
   const fetchJobs = async (filterParams = {}) => {
     try {
       setLoading(true);
@@ -58,6 +62,7 @@ const JobSeekerDashboard = () => {
           ? response.data
           : response.data.jobs || [];
         setJobs(jobsData);
+        setCurrentPage(1);
       }
     } catch (error) {
       console.error(error);
@@ -66,6 +71,7 @@ const JobSeekerDashboard = () => {
           "Lỗi khi tải danh sách công việc. Vui lòng thử lại."
       );
       setJobs([]);
+      setCurrentPage(1);
     } finally {
       setLoading(false);
     }
@@ -95,6 +101,11 @@ const JobSeekerDashboard = () => {
     }, 500);
     return () => clearTimeout(timeoutId);
   }, [filters, user]);
+
+  const totalPages = Math.ceil(jobs.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedJobs = jobs.slice(startIndex, startIndex + itemsPerPage);
+
   const handleFilterChange = (key, value) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
@@ -127,15 +138,14 @@ const JobSeekerDashboard = () => {
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h3 className="font-bold text-gray-900">Bộ lọc</h3>
           <button
-            onClick={() => setShowMobileFilter(false)}
-            className="p-2 hover:bg-gray-100 rounded-xl transition-colors cursor-pointer">
-            <X className="w-5 h-5" />
+            onClick={clearAllFilters}
+            className="text-primary-600 hover:text-primary-700 font-semibold text-sm cursor-pointer hover:bg-primary-50 px-3 py-1.5 rounded-lg transition-colors  ">
+            Xóa tất cả
           </button>
         </div>
         <div className="p-6 h-full overflow-y-auto pb-20">
           <FilterContent
             toggleSection={toggleSection}
-            clearAllFilters={clearAllFilters}
             expandedSections={expanededSections}
             filters={filters}
             handleFilterChange={handleFilterChange}
@@ -165,7 +175,7 @@ const JobSeekerDashboard = () => {
           toast.success("Đã lưu công việc.");
         }
       }
-      fetchJobs();
+      await fetchJobs();
     } catch (error) {
       console.error(error);
       if (isSaved) {
@@ -196,7 +206,7 @@ const JobSeekerDashboard = () => {
           toast.success("Ứng tuyển công việc thành công.");
         }
       }
-      fetchJobs();
+      await fetchJobs();
     } catch (error) {
       console.error(error);
       toast.error(
@@ -209,113 +219,194 @@ const JobSeekerDashboard = () => {
     return <LoadingSpinner />;
   }
   return (
-    <div className="bg-gradient-to-br from-primary-50 via-white to-purple-50 min-h-screen">
-      <Navbar />
-      <div className="min-h-screen mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-8">
-          <SearchHeader
-            filters={filters}
-            handleFilterChange={handleFilterChange}
-          />
-          <div className="flex gap-6 lg:gap-8">
-            <div className="hidden lg:block w-80 flex-shrink-0">
-              <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 p-6 sticky top-20">
-                <h3 className="font-bold text-gray-900 text-xl mb-6">Bộ lọc</h3>
-                <FilterContent
-                  toggleSection={toggleSection}
-                  clearAllFilters={clearAllFilters}
-                  expandedSections={expanededSections}
-                  filters={filters}
-                  handleFilterChange={handleFilterChange}
-                />
+    <div className="min-h-screen mt-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-8">
+        <SearchHeader
+          filters={filters}
+          handleFilterChange={handleFilterChange}
+        />
+        <div className="flex gap-6 lg:gap-8">
+          <div className="hidden lg:block w-80 flex-shrink-0">
+            <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 p-6 sticky top-20">
+              <div className="flex items-center justify-between mb-6 ">
+                <h3 className="font-bold text-gray-900 text-xl ">Bộ lọc</h3>
+                <button
+                  onClick={clearAllFilters}
+                  className="text-primary-600 hover:text-primary-700 font-semibold text-sm cursor-pointer hover:bg-primary-50 px-3 py-1.5 rounded-lg transition-colors  ">
+                  Xóa tất cả
+                </button>
               </div>
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-6 lg:mb-8 gap-4">
-                <div>
-                  <p className="text-gray-600 text-sm lg:text-base">
-                    Hiển thị{" "}
-                    <span className="font-bold text-gray-900">
-                      {jobs.length}
-                    </span>{" "}
-                    công việc
-                  </p>
-                </div>
-                <div className="flex items-center justify-between lg:justify-end gap-4">
-                  <button
-                    onClick={() => setShowMobileFilter(true)}
-                    className="lg:hidden flex items-center gap-2 px-4 py-2 bg-white rounded-xl border border-gray-200 text-gray-700 font-medium hover:text-gray-900 hover:bg-gray-50 transition-colors cursor-pointer shadow-sm">
-                    <Filter className="w-4 h-4" />
-                    Lọc
-                  </button>
-                  <div className="flex items-center gap-3 lg:gap-4">
-                    <div className="flex items-center border border-gray-200 rounded-xl p-1 shadow-sm bg-white ">
-                      <button
-                        onClick={() => setViewMode("grid")}
-                        className={`p-2 rounded-lg transition-colors cursor-pointer ${
-                          viewMode === "grid"
-                            ? "bg-primary-600 text-white shadow-sm"
-                            : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-                        }`}>
-                        <Grid className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => setViewMode("list")}
-                        className={`p-2 rounded-lg transition-colors cursor-pointer ${
-                          viewMode === "list"
-                            ? "bg-primary-600 text-white shadow-sm"
-                            : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-                        }`}>
-                        <List className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {jobs.length === 0 && !loading ? (
-                <div className="text-center py-16 lg:py-20 bg-white/60 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 ">
-                  <div className="text-gray-400 mb-6">
-                    <Search className="w-16 h-16 mx-auto" />
-                  </div>
-                  <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-3">
-                    Không tìm thấy công việc phù hợp.
-                  </h3>
-                  <p className="text-gray-600 mb-6">
-                    Thử điều chỉnh hoặc xóa bộ lọc để tìm kiếm nhiều công việc
-                    hơn.
-                  </p>
-                  <button
-                    onClick={clearAllFilters}
-                    className="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-6 rounded-xl shadow-sm transition-colors cursor-pointer">
-                    Xóa tất cả bộ lọc
-                  </button>
-                </div>
-              ) : (
-                <>
-                  <div
-                    className={
-                      viewMode === "grid"
-                        ? "grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-4 lg:gap-6"
-                        : "space-y-4 lg:space-y-6"
-                    }>
-                    {jobs.map((job) => (
-                      <JobCard
-                        key={job._id}
-                        job={job}
-                        onClick={() => navigate(`/jobs/${job._id}`)}
-                        onToggleSave={() => toggleSaveJob(job._id, job.isSaved)}
-                        onApply={() => applyToJob(job._id)}
-                      />
-                    ))}
-                  </div>
-                </>
-              )}
+              <FilterContent
+                toggleSection={toggleSection}
+                expandedSections={expanededSections}
+                filters={filters}
+                handleFilterChange={handleFilterChange}
+              />
             </div>
           </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-6 lg:mb-8 gap-4">
+              <div>
+                <p className="text-gray-600 text-sm lg:text-base">
+                  Hiển thị{" "}
+                  <span className="font-bold text-gray-900">{jobs.length}</span>{" "}
+                  công việc
+                </p>
+              </div>
+              <div className="flex items-center justify-between lg:justify-end gap-4">
+                <button
+                  onClick={() => setShowMobileFilter(true)}
+                  className="lg:hidden flex items-center gap-2 px-4 py-2 bg-white rounded-xl border border-gray-200 text-gray-700 font-medium hover:text-gray-900 hover:bg-gray-50 transition-colors cursor-pointer shadow-sm">
+                  <Filter className="w-4 h-4" />
+                  Lọc
+                </button>
+                <div className="flex items-center gap-3 lg:gap-4">
+                  <div className="flex items-center border border-gray-200 rounded-xl p-1 shadow-sm bg-white ">
+                    <button
+                      onClick={() => setViewMode("grid")}
+                      className={`p-2 rounded-lg transition-colors cursor-pointer ${
+                        viewMode === "grid"
+                          ? "bg-primary-600 text-white shadow-sm"
+                          : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                      }`}>
+                      <Grid className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => setViewMode("list")}
+                      className={`p-2 rounded-lg transition-colors cursor-pointer ${
+                        viewMode === "list"
+                          ? "bg-primary-600 text-white shadow-sm"
+                          : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                      }`}>
+                      <List className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {jobs.length === 0 && !loading ? (
+              <div className="text-center py-16 lg:py-20 bg-white/60 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 ">
+                <div className="text-gray-400 mb-6">
+                  <Search className="w-16 h-16 mx-auto" />
+                </div>
+                <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-3">
+                  Không tìm thấy công việc phù hợp.
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Thử điều chỉnh hoặc xóa bộ lọc để tìm kiếm nhiều công việc
+                  hơn.
+                </p>
+                <button
+                  onClick={clearAllFilters}
+                  className="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-6 rounded-xl shadow-sm transition-colors cursor-pointer">
+                  Xóa tất cả bộ lọc
+                </button>
+              </div>
+            ) : (
+              <>
+                <div
+                  className={
+                    viewMode === "grid"
+                      ? "grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-4 lg:gap-6"
+                      : "space-y-4 lg:space-y-6"
+                  }>
+                  {paginatedJobs.map((job) => (
+                    <JobCard
+                      key={job._id}
+                      job={job}
+                      onClick={() => navigate(`/jobs/${job._id}`)}
+                      onToggleSave={() => toggleSaveJob(job._id, job.isSaved)}
+                      onApply={() => applyToJob(job._id)}
+                    />
+                  ))}
+                </div>
+
+                {/* Pagination controls */}
+                {totalPages > 1 && (
+                  <div className="mt-6 flex items-center justify-between">
+                    <div className="flex-1 flex justify-between sm:hidden">
+                      <button
+                        onClick={() =>
+                          setCurrentPage(Math.max(1, currentPage - 1))
+                        }
+                        disabled={currentPage === 1}
+                        className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                        Trước
+                      </button>
+                      <button
+                        onClick={() =>
+                          setCurrentPage(Math.min(totalPages, currentPage + 1))
+                        }
+                        disabled={
+                          currentPage === totalPages || totalPages === 0
+                        }
+                        className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                        Sau
+                      </button>
+                    </div>
+                    <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                      <div>
+                        <p className="text-sm text-gray-700">
+                          Hiển thị{" "}
+                          <span className="font-medium">{startIndex + 1}</span>{" "}
+                          -{" "}
+                          <span className="font-medium">
+                            {Math.min(startIndex + itemsPerPage, jobs.length)}
+                          </span>{" "}
+                          trong{" "}
+                          <span className="font-medium">{jobs.length}</span> kết
+                          quả
+                        </p>
+                      </div>
+                      <div>
+                        <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+                          <button
+                            onClick={() =>
+                              setCurrentPage(Math.max(1, currentPage - 1))
+                            }
+                            disabled={currentPage === 1}
+                            className="relative inline-flex items-center p-2 border text-sm font-medium rounded-l-md  text-gray-500 border-gray-300 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
+                            Trước
+                          </button>
+                          {Array.from(
+                            { length: totalPages },
+                            (_, idx) => idx + 1
+                          ).map((page) => (
+                            <button
+                              key={page}
+                              onClick={() => setCurrentPage(page)}
+                              className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium cursor-pointer ${
+                                page === currentPage
+                                  ? "z-10 bg-primary-50 border-primary-500 text-primary-600"
+                                  : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50"
+                              }`}>
+                              {page}
+                            </button>
+                          ))}
+                          <button
+                            onClick={() =>
+                              setCurrentPage(
+                                Math.min(totalPages, currentPage + 1)
+                              )
+                            }
+                            disabled={
+                              currentPage === totalPages || totalPages === 0
+                            }
+                            className="relative inline-flex items-center p-2 border text-sm font-medium rounded-r-md  text-gray-500 border-gray-300 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
+                            Sau
+                          </button>
+                        </nav>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </div>
-        <MobileFilterOverlay />
       </div>
+      <MobileFilterOverlay />
     </div>
   );
 };

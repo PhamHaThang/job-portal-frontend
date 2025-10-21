@@ -43,7 +43,7 @@ const ProfileDropdown = ({
           <a
             onClick={() =>
               navigate(
-                userRole === "jobseeker" ? "/profile" : "/company-profile"
+                userRole === "jobseeker" ? "/profile" : "/employer-profile"
               )
             }
             className="block px-4 py-2 mt-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors duration-200">
@@ -54,7 +54,7 @@ const ProfileDropdown = ({
               navigate(
                 userRole === "jobseeker"
                   ? "/change-password"
-                  : "/company-change-password"
+                  : "/employer-change-password"
               )
             }
             className="block px-4 py-2 mt-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors duration-200">
