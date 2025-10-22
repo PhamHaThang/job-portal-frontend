@@ -4,7 +4,6 @@ import RoleInfoHeader from "../../components/ui/RoleInfoHeader";
 import { formatDate } from "../../utils/format";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
-import LoadingSpinner from "../../components/ui/LoadingSpinner";
 import { AnimatePresence, motion } from "framer-motion";
 import QuestionCard from "../../components/ui/QuestionCard";
 import toast from "react-hot-toast";
@@ -12,6 +11,12 @@ import { CircleAlert, ListCollapse, Loader, LoaderCircle } from "lucide-react";
 import AIResponsePreview from "../../components/ui/AIResponsePreview";
 import Drawer from "../../components/ui/Drawer";
 import SkeletonLoader from "../../components/ui/SkeletonLoader";
+import {
+  conceptExplainPrompt,
+  questionAnswerPrompt,
+  parseJSONResponse,
+} from "../../utils/helper";
+
 const InterviewPrep = () => {
   const { sessionId } = useParams();
 
@@ -22,7 +27,16 @@ const InterviewPrep = () => {
   const [explanation, setExplanation] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isUpdateLoader, setIsUpdateLoader] = useState(false);
-
+  const [aiReady, setAiReady] = useState(false);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (window.puter?.ai?.chat) {
+        setAiReady(true);
+        clearInterval(interval);
+      }
+    }, 300);
+    return () => clearInterval(interval);
+  }, []);
   const fetchSessionDetailsById = async () => {
     try {
       setIsLoading(true);
@@ -42,33 +56,39 @@ const InterviewPrep = () => {
       setIsLoading(false);
     }
   };
+
   const generateConceptExplanation = async (question) => {
+    if (!aiReady) {
+      toast.error("AI chưa sẵn sàng, vui lòng thử lại sau.");
+      return;
+    }
+
     setErrorMsg("");
     setExplanation(null);
     setIsLoading(true);
     setOpenLearnMoreDrawer(true);
     try {
-      const response = await axiosInstance.post(
-        API_PATHS.AI.GENERATE_EXPLANATION,
-        {
-          question,
-        }
+      const prompt = conceptExplainPrompt(question);
+      const response = await window.puter.ai.chat(
+        [
+          {
+            role: "system",
+            content: "Bạn là trợ lý giải thích kiến thức phỏng vấn.",
+          },
+          { role: "user", content: prompt },
+        ],
+        { model: "gpt-5-nano" }
       );
-      if (
-        response.status === 201 &&
-        response.data &&
-        response.data.explanation
-      ) {
-        console.log(response.data.explanation);
-        setExplanation(response.data.explanation);
-      }
+      const raw =
+        typeof response === "string"
+          ? response
+          : response?.message?.content || "";
+      const parsed = parseJSONResponse(raw);
+      setExplanation(parsed);
     } catch (error) {
       setExplanation(null);
-      setErrorMsg(
-        error.response && error.response.data && error.response.data.message
-          ? error.response.data.message
-          : "Lỗi khi tạo giải thích."
-      );
+      setErrorMsg(error.message || "Lỗi khi tạo giải thích.");
+      toast.error(error.message || "Lỗi khi tạo giải thích.");
     } finally {
       setIsLoading(false);
     }
@@ -98,38 +118,52 @@ const InterviewPrep = () => {
     }
   };
   const uploadMoreQuestions = async () => {
+    if (!aiReady) {
+      toast.error("AI chưa sẵn sàng, vui lòng thử lại sau.");
+      return;
+    }
     const loadToastId = toast.loading("Đang tải thêm câu hỏi...");
     try {
       setIsUpdateLoader(true);
-      toast.loading("Đang tải thêm câu hỏi...", { id: loadToastId });
-      const response = await axiosInstance.post(
-        API_PATHS.AI.GENERATE_QUESTIONS,
-        {
-          role: sessionData.role,
-          experience: sessionData.experience,
-          topicsToFocus: sessionData.topicsToFocus,
-          numberOfQuestions: 5,
-        }
+      const prompt = questionAnswerPrompt(
+        sessionData.role,
+        sessionData.experience,
+        sessionData.topicsToFocus,
+        5
       );
-      if (response.status === 201 && response.data && response.data.questions) {
-        const newQuestions = response.data.questions;
+      const response = await window.puter.ai.chat(
+        [
+          {
+            role: "system",
+            content: "Bạn là AI chuyên tạo câu hỏi phỏng vấn.",
+          },
+          { role: "user", content: prompt },
+        ],
+        { model: "gpt-5-nano" }
+      );
+
+      const raw =
+        typeof response === "string"
+          ? response
+          : response?.message?.content || "";
+      const parsed = parseJSONResponse(raw);
+      if (Array.isArray(parsed)) {
         const response1 = await axiosInstance.post(
           API_PATHS.QUESTION.ADD_QUESTION_TO_SESSION,
-          { sessionId, questions: newQuestions }
+          { sessionId, questions: parsed }
         );
         if (response1.data) {
           toast.success("Tải thêm câu hỏi thành công", { id: loadToastId });
           fetchSessionDetailsById();
         }
+      } else {
+        throw new Error("Phản hồi AI không phải mảng câu hỏi.");
       }
     } catch (error) {
       console.error("Error uploading more questions:", error);
-      toast.error(
-        error.response && error.response.data && error.response.data.message
-          ? error.response.data.message
-          : "Lỗi khi tải thêm câu hỏi.",
-        { id: loadToastId }
-      );
+      toast.error(error.message || "Lỗi khi tải thêm câu hỏi.", {
+        id: loadToastId,
+      });
     } finally {
       setIsUpdateLoader(false);
     }

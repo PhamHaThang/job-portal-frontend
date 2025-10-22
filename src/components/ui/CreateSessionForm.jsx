@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import InputField from "../../components/ui/InputField";
 import { Loader } from "lucide-react";
 import toast from "react-hot-toast";
+import { questionAnswerPrompt, parseJSONResponse } from "../../utils/helper";
 const CreateSessionForm = () => {
   const [formData, setFormData] = useState({
     role: "",
@@ -15,6 +16,16 @@ const CreateSessionForm = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [aiReady, setAiReady] = useState(false);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (window.puter?.ai?.chat) {
+        setAiReady(true);
+        clearInterval(interval);
+      }
+    }, 300);
+    return () => clearInterval(interval);
+  }, []);
   const navigate = useNavigate();
   const handleChange = (key, value) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
@@ -31,17 +42,32 @@ const CreateSessionForm = () => {
     const loadingToastId = "creating-session";
     try {
       toast.loading("Đang tạo buổi luyện tập...", { id: loadingToastId });
-      const aiResponse = await axiosInstance.post(
-        API_PATHS.AI.GENERATE_QUESTIONS,
-        {
-          role,
-          experience,
-          topicsToFocus,
-          numberOfQuestions: 5,
-        }
+      if (!aiReady) {
+        toast.error("AI chưa sẵn sàng, vui lòng thử lại sau.");
+        return;
+      }
+      const prompt = questionAnswerPrompt(
+        formData.role,
+        formData.experience,
+        formData.topicsToFocus,
+        formData.numberOfQuestions || 5
       );
-      if (aiResponse.status === 201) {
-        const questions = aiResponse.data.questions;
+      const response = await window.puter.ai.chat(
+        [
+          {
+            role: "system",
+            content: "Bạn là AI chuyên tạo câu hỏi phỏng vấn.",
+          },
+          { role: "user", content: prompt },
+        ],
+        { model: "gpt-5-nano" }
+      );
+      const raw =
+        typeof response === "string"
+          ? response
+          : response?.message?.content || "";
+      const parsed = parseJSONResponse(raw);
+      if (Array.isArray(parsed)) {
         const response = await axiosInstance.post(
           API_PATHS.SESSION.CREATE_SESSION,
           {
@@ -49,7 +75,7 @@ const CreateSessionForm = () => {
             experience,
             topicsToFocus,
             description,
-            questions,
+            questions: parsed,
           }
         );
         if (response.status === 201 && response.data?.session?._id) {
