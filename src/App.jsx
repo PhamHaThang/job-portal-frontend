@@ -24,6 +24,7 @@ import UserLayout from "./components/layout/UserLayout";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import InterviewPrep from "./pages/JobSeeker/InterviewPrep";
 import InterviewPrepDashboard from "./pages/JobSeeker/InterviewPrepDashboard";
+import ResumeAnalyzer from "./pages/JobSeeker/ResumeAnalyzer";
 const App = () => {
   return (
     <div>
@@ -55,6 +56,7 @@ const App = () => {
                 path="/interview-prep/:sessionId"
                 element={<InterviewPrep />}
               />
+              <Route path="/resume-analyzer" element={<ResumeAnalyzer />} />
             </Route>
           </Route>
 

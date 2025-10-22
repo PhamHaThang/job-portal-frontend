@@ -36,7 +36,7 @@ const ResumeDashboard = () => {
     return <LoadingSpinner />;
   }
   return (
-    <div className="pt-24 min-h-screen">
+    <div className="mt-24 min-h-screen">
       <TitlePage
         title="Tạo mới CV của bạn"
         description="Tạo CV chuyên nghiệp theo cách của bạn để ứng tuyển vào các vị trí mơ ước."

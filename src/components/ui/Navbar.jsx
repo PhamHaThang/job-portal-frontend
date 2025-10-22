@@ -84,6 +84,17 @@ const Navbar = () => {
               }`}>
               Luyện phỏng vấn
             </a>
+            <a
+              onClick={() =>
+                navigate(isAuthenticated ? "/resume-analyzer" : "/login")
+              }
+              className={`transition-colors cursor-pointer ${
+                isActiveRoute("/resume-analyzer")
+                  ? "text-primary-600 border-primary-600 font-semibold"
+                  : "text-secondary-600 hover:text-secondary-900 font-medium  "
+              }`}>
+              Đánh giá CV
+            </a>
           </nav>
           <div className="flex items-center space-x-3">
             {user && (
