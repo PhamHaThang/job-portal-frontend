@@ -49,4 +49,19 @@ export const API_PATHS = {
     UPDATE_RESUME: (resumeId) => `/resumes/${resumeId}`, // JOBSEEKER
     DELETE_RESUME: (resumeId) => `/resumes/${resumeId}`, // JOBSEEKER
   },
+  AI: {
+    GENERATE_QUESTIONS: "/ai/generate-questions",
+    GENERATE_EXPLANATION: "/ai/generate-explanation",
+  },
+  SESSION: {
+    CREATE_SESSION: "/sessions",
+    GET_MY_SESSIONS: "/sessions",
+    GET_SESSION_BY_ID: (sessionId) => `/sessions/${sessionId}`,
+    DELETE_SESSION: (sessionId) => `/sessions/${sessionId}`,
+  },
+  QUESTION: {
+    ADD_QUESTION_TO_SESSION: "/questions/add",
+    TOGGLE_PIN: (questionId) => `/questions/${questionId}/pin`,
+    UPDATE_NOTE: (questionId) => `/questions/${questionId}/note`,
+  },
 };

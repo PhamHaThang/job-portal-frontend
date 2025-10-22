@@ -22,6 +22,8 @@ import ResumeDashboard from "./pages/JobSeeker/ResumeDashboard";
 import EditResume from "./pages/JobSeeker/EditResume";
 import UserLayout from "./components/layout/UserLayout";
 import DashboardLayout from "./components/layout/DashboardLayout";
+import InterviewPrep from "./pages/JobSeeker/InterviewPrep";
+import InterviewPrepDashboard from "./pages/JobSeeker/InterviewPrepDashboard";
 const App = () => {
   return (
     <div>
@@ -44,6 +46,14 @@ const App = () => {
               <Route
                 path="/resume-builder/:resumeId"
                 element={<EditResume />}
+              />
+              <Route
+                path="/interview-prep"
+                element={<InterviewPrepDashboard />}
+              />
+              <Route
+                path="/interview-prep/:sessionId"
+                element={<InterviewPrep />}
               />
             </Route>
           </Route>

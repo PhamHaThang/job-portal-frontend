@@ -31,6 +31,9 @@ const Navbar = () => {
     if (path === "/resume-builder") {
       return location.pathname.startsWith("/resume-builder");
     }
+    if (path === "/interview-prep") {
+      return location.pathname.startsWith("/interview-prep");
+    }
     return location.pathname === path;
   };
   return (
@@ -39,7 +42,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           <Link to="/find-jobs" className="flex items-center space-x-3">
             <img src={logo} alt="logo" className="h-12 w-auto" />
-            <div className="flex flex-col leading-tight">
+            <div className="flex flex-col md:leading-tight ">
               <span className="text-primary-500 font-bold text-sm">
                 Học viện Công nghệ Bưu chính Viễn thông
               </span>
@@ -69,6 +72,17 @@ const Navbar = () => {
                   : "text-secondary-600 hover:text-secondary-900 font-medium  "
               }`}>
               Tạo CV
+            </a>
+            <a
+              onClick={() =>
+                navigate(isAuthenticated ? "/interview-prep" : "/login")
+              }
+              className={`transition-colors cursor-pointer ${
+                isActiveRoute("/interview-prep")
+                  ? "text-primary-600 border-primary-600 font-semibold"
+                  : "text-secondary-600 hover:text-secondary-900 font-medium  "
+              }`}>
+              Luyện phỏng vấn
             </a>
           </nav>
           <div className="flex items-center space-x-3">

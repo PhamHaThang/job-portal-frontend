@@ -57,7 +57,6 @@ const JobSeekerDashboard = () => {
         `${API_PATHS.JOBS.GET_ALL_JOBS}?${params.toString()}`
       );
       if (response.status === 200) {
-        console.log(response.data);
         const jobsData = Array.isArray(response.data)
           ? response.data
           : response.data.jobs || [];

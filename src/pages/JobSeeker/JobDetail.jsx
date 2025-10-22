@@ -31,7 +31,6 @@ const JobDetail = () => {
       );
       if (response.status === 200) {
         setJobDetails(response.data.job);
-        console.log(response.data.job);
       }
     } catch (error) {
       console.log("Failed to fetch job details:", error);

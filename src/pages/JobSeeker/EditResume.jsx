@@ -646,128 +646,124 @@ const EditResume = () => {
       window.removeEventListener("resize", updateBaseWidth);
     };
   }, []);
-
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
   return (
     <>
       <div className="min-h-screen pb-20">
         <div className="container mx-auto pt-24 px-4">
-          {isLoading ? (
-            <LoadingSpinner />
-          ) : (
-            <>
-              <div className="flex items-center justify-between gap-5 bg-white rounded-lg border border-primary-100 py-3 px-4 mb-4">
-                <TitleInput
-                  title={resumeData.title}
-                  setTitle={(value) =>
-                    setResumeData({ ...resumeData, title: value })
-                  }
-                />
+          <div className="flex items-center justify-between gap-5 bg-white rounded-lg border border-primary-100 py-3 px-4 mb-4">
+            <TitleInput
+              title={resumeData.title}
+              setTitle={(value) =>
+                setResumeData({ ...resumeData, title: value })
+              }
+            />
 
-                <div className="flex items-center gap-4">
-                  <button
-                    className="px-3 py-2 cursor-pointer flex items-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={isLoading}
-                    onClick={handleOpenThemeSelector}>
-                    <Palette className="w-5 h-5" />
-                    <span className="hidden md:block">Theme</span>
-                  </button>
-                  <button
-                    className="px-3 py-2 cursor-pointer flex items-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={isLoading}
-                    onClick={handleDeleteResume}>
-                    <Trash2 className="w-5 h-5" />
-                    <span className="hidden md:block">Xóa</span>
-                  </button>
-                  <button
-                    className="px-3 py-2 cursor-pointer flex items-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={isLoading}
-                    onClick={() => setOpenPreviewModal(true)}>
-                    <Download className="w-5 h-5" />
-                    <span className="hidden md:block">Tải</span>
-                  </button>
-                  <button
-                    className="px-3 py-2 cursor-pointer flex items-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-sm"
-                    onClick={uploadResumeImages}
-                    disabled={isLoading}>
-                    <Save />
-                    {isLoading ? "Đang lưu..." : "Lưu"}
-                  </button>
-                  <button
-                    className="px-3 py-2 cursor-pointer flex items-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={isLoading}
-                    onClick={() => navigate(-1)}>
-                    <ArrowLeft className="w-5 h-5" />
-                    <span className="hidden md:block">Thoát</span>
-                  </button>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 pb-10">
-                <div className="bg-white rounded-lg border border-primary-100 p-4  ">
-                  <div className="flex flex-col gap-3">
-                    <StepProgress progress={progress} />
-                    <select
-                      value={currentPage}
-                      onChange={handleSelectStep}
-                      className="w-full rounded-md border border-primary-100 px-3 py-2 text-sm outline-none focus:border-primary-500  
+            <div className="flex items-center gap-4">
+              <button
+                className="px-3 py-2 cursor-pointer flex items-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={isLoading}
+                onClick={handleOpenThemeSelector}>
+                <Palette className="w-5 h-5" />
+                <span className="hidden md:block">Theme</span>
+              </button>
+              <button
+                className="px-3 py-2 cursor-pointer flex items-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={isLoading}
+                onClick={handleDeleteResume}>
+                <Trash2 className="w-5 h-5" />
+                <span className="hidden md:block">Xóa</span>
+              </button>
+              <button
+                className="px-3 py-2 cursor-pointer flex items-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={isLoading}
+                onClick={() => setOpenPreviewModal(true)}>
+                <Download className="w-5 h-5" />
+                <span className="hidden md:block">Tải</span>
+              </button>
+              <button
+                className="px-3 py-2 cursor-pointer flex items-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-sm"
+                onClick={uploadResumeImages}
+                disabled={isLoading}>
+                <Save />
+                {isLoading ? "Đang lưu..." : "Lưu"}
+              </button>
+              <button
+                className="px-3 py-2 cursor-pointer flex items-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={isLoading}
+                onClick={() => navigate(-1)}>
+                <ArrowLeft className="w-5 h-5" />
+                <span className="hidden md:block">Thoát</span>
+              </button>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 pb-10">
+            <div className="bg-white rounded-lg border border-primary-100 p-4  ">
+              <div className="flex flex-col gap-3">
+                <StepProgress progress={progress} />
+                <select
+                  value={currentPage}
+                  onChange={handleSelectStep}
+                  className="w-full rounded-md border border-primary-100 px-3 py-2 text-sm outline-none focus:border-primary-500  
                       cursor-pointer
                       ">
-                      {STEP_FLOW.map((step) => (
-                        <option key={step.value} value={step.value}>
-                          {step.label}
-                        </option>
+                  {STEP_FLOW.map((step) => (
+                    <option key={step.value} value={step.value}>
+                      {step.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {renderForm()}
+              <div className="mx-5 ">
+                {errorMsg.length > 0 && (
+                  <div className="bg-amber-100 border border-amber-300 rounded-lg p-4">
+                    <ul className="space-y-1 text-sm font-medium text-amber-700 ">
+                      {errorMsg.map((msg, index) => (
+                        <li key={index} className="flex items-center ">
+                          <CircleAlert className="w-4 h-4 mr-2" /> {msg}
+                        </li>
                       ))}
-                    </select>
+                    </ul>
                   </div>
-                  {renderForm()}
-                  <div className="mx-5 ">
-                    {errorMsg.length > 0 && (
-                      <div className="bg-amber-100 border border-amber-300 rounded-lg p-4">
-                        <ul className="space-y-1 text-sm font-medium text-amber-700 ">
-                          {errorMsg.map((msg, index) => (
-                            <li key={index} className="flex items-center ">
-                              <CircleAlert className="w-4 h-4 mr-2" /> {msg}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                    <div className="flex items-end justify-end gap-3 mt-5 mb-5">
-                      <button
-                        className="px-3 py-2 cursor-pointer flex items-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                        onClick={goBack}
-                        disabled={isLoading}>
-                        <ArrowLeft />
-                        Quay lại
-                      </button>
+                )}
+                <div className="flex items-end justify-end gap-3 mt-5 mb-5">
+                  <button
+                    className="px-3 py-2 cursor-pointer flex items-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                    onClick={goBack}
+                    disabled={isLoading}>
+                    <ArrowLeft />
+                    Quay lại
+                  </button>
 
-                      <button
-                        className="px-3 py-2 cursor-pointer flex items-center gap-1 bg-linear-to-r from-primary-500 via-primary-600 to-primary-700 text-white rounded-md hover:bg-gradient-to-br font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                        onClick={validateAndNext}
-                        disabled={isLoading}>
-                        {currentPage === "additionalInfo" && <Download />}
-                        {currentPage === "additionalInfo"
-                          ? "Xem trước & Tải"
-                          : "Tiếp tục"}
-                        {currentPage !== "additionalInfo" && (
-                          <ArrowLeft className="rotate-180" />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  ref={resumeRef}
-                  className="bg-white rounded-lg border border-primary-100 shadow-sm">
-                  <RenderResume
-                    templateId={resumeData?.template?.theme || ""}
-                    resumeData={resumeData}
-                    colorPalette={resumeData?.template?.colorPalette || []}
-                    containerWidth={baseWidth}
-                  />
+                  <button
+                    className="px-3 py-2 cursor-pointer flex items-center gap-1 bg-linear-to-r from-primary-500 via-primary-600 to-primary-700 text-white rounded-md hover:bg-gradient-to-br font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                    onClick={validateAndNext}
+                    disabled={isLoading}>
+                    {currentPage === "additionalInfo" && <Download />}
+                    {currentPage === "additionalInfo"
+                      ? "Xem trước & Tải"
+                      : "Tiếp tục"}
+                    {currentPage !== "additionalInfo" && (
+                      <ArrowLeft className="rotate-180" />
+                    )}
+                  </button>
                 </div>
               </div>
-            </>
-          )}
+            </div>
+            <div
+              ref={resumeRef}
+              className="bg-white rounded-lg border border-primary-100 shadow-sm">
+              <RenderResume
+                templateId={resumeData?.template?.theme || ""}
+                resumeData={resumeData}
+                colorPalette={resumeData?.template?.colorPalette || []}
+                containerWidth={baseWidth}
+              />
+            </div>
+          </div>
         </div>
       </div>
       <Modal

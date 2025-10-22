@@ -48,7 +48,7 @@ const CreateResumeForm = () => {
   };
 
   return (
-    <div className="w-[80vw] md:w-[50vh] p-7 flex flex-col justify-center">
+    <div className="w-[80vw] md:w-[35vw] p-7 flex flex-col justify-center">
       <h3 className="text-lg font-semibold text-black">Tạo CV mới</h3>
       <p className="text-xs text-slate-700 mt-[5px] mb-3">
         Vui lòng nhập tiêu đề cho CV của bạn và nhấn "Tạo CV" để bắt đầu.

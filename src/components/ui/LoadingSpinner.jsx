@@ -1,8 +1,8 @@
 import { Briefcase } from "lucide-react";
 
-const LoadingSpinner = () => {
+const LoadingSpinner = ({ text }) => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50 flex justify-center items-center ">
+    <div className="min-h-screen flex justify-center items-center ">
       <div className="text-center">
         <div className=" relative">
           <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary-200 border-t-primary-600 mx-auto mb-4"></div>
@@ -11,7 +11,7 @@ const LoadingSpinner = () => {
           </div>
         </div>
         <p className="text-gray-600 font-medium">
-          Đang tải dữ liệu, vui lòng chờ...
+          {text || "Đang tải dữ liệu, vui lòng chờ..."}
         </p>
       </div>
     </div>
