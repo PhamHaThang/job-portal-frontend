@@ -20,9 +20,11 @@ import {
 } from "lucide-react";
 import { jsonrepair } from "jsonrepair";
 import { motion, AnimatePresence } from "framer-motion";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
 const ResumeAnalyzer = () => {
+  useDocumentTitle("Đánh giá CV");
   const [aiReady, setAiReady] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadedFile, setUploadedFile] = useState(null);
@@ -222,31 +224,37 @@ const ResumeAnalyzer = () => {
   );
 
   return (
-    <div className="min-h-screen pb-24 pt-24">
-      <TitlePage
-        title="Đánh giá CV của bạn"
-        description="Nhận phản hồi chi tiết và điểm số ATS để cải thiện hồ sơ xin việc."
-      />
+    <div className="min-h-screen pb-20 md:pb-24 pt-20 md:pt-24">
+      <div className="px-2 sm:px-4">
+        <TitlePage
+          title="Đánh giá CV của bạn"
+          description="Nhận phản hồi chi tiết và điểm số ATS để cải thiện hồ sơ xin việc."
+        />
+      </div>
 
       <motion.div
-        className="mx-auto mt-12 w-full max-w-5xl px-4"
+        className="mx-auto mt-6 md:mt-8 w-full max-w-5xl px-2 sm:px-4"
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: "easeOut" }}>
         <motion.div
-          className="rounded-3xl border border-primary-200/70 bg-gradient-to-br from-primary-50 to-white p-6 shadow-sm"
+          className="rounded-2xl md:rounded-3xl border border-primary-200/70 bg-gradient-to-br from-primary-50 to-white p-4 md:p-6 shadow-sm"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.35, ease: "easeOut" }}>
           {!uploadedFile ? (
             <div className="text-center">
-              <div className="mx-auto flex h-28 w-28 items-center justify-center rounded-3xl bg-primary-100 text-primary-600">
-                <FileUser size={50} strokeWidth={1} />
+              <div className="mx-auto flex h-20 w-20 md:h-28 md:w-28 items-center justify-center rounded-2xl md:rounded-3xl bg-primary-100 text-primary-600">
+                <FileUser
+                  size={40}
+                  strokeWidth={1}
+                  className="md:w-[50px] md:h-[50px]"
+                />
               </div>
-              <h3 className="mt-6 text-2xl font-semibold text-gray-800">
+              <h3 className="mt-4 md:mt-6 text-xl md:text-2xl font-semibold text-gray-800">
                 Tải lên CV của bạn
               </h3>
-              <p className="mt-2 text-sm text-gray-500">
+              <p className="mt-2 text-xs md:text-sm text-gray-500 px-2">
                 Chỉ hỗ trợ định dạng PDF, dung lượng tối đa 5MB.
               </p>
 
@@ -261,15 +269,16 @@ const ResumeAnalyzer = () => {
 
               <label
                 htmlFor="resume-upload"
-                className={`mt-6 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
+                className={`mt-4 md:mt-6 inline-flex items-center gap-2 rounded-full px-5 md:px-6 py-2.5 md:py-3 text-xs md:text-sm font-semibold transition ${
                   !aiReady || isLoading
                     ? "cursor-not-allowed bg-gray-300 text-gray-500"
                     : "cursor-pointer bg-primary-600 text-white hover:bg-primary-700"
                 }`}>
                 {isLoading ? (
                   <>
-                    <LoaderCircle className="h-5 w-5 animate-spin" />
-                    Đang phân tích...
+                    <LoaderCircle className="h-4 w-4 md:h-5 md:w-5 animate-spin" />
+                    <span className="hidden sm:inline">Đang phân tích...</span>
+                    <span className="sm:hidden">Đang xử lý...</span>
                   </>
                 ) : (
                   "Chọn tệp PDF"
@@ -277,19 +286,19 @@ const ResumeAnalyzer = () => {
               </label>
 
               {!aiReady && (
-                <p className="mt-3 text-xs text-gray-400">
+                <p className="mt-3 text-xs text-gray-400 px-2">
                   Đang khởi tạo AI, vui lòng chờ trong giây lát...
                 </p>
               )}
             </div>
           ) : (
-            <div className="flex flex-col gap-4 rounded-2xl border border-primary-100 bg-white/80 p-5 shadow-inner backdrop-blur">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div>
-                  <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wide">
+            <div className="flex flex-col gap-3 md:gap-4 rounded-xl md:rounded-2xl border border-primary-100 bg-white/80 p-4 md:p-5 shadow-inner backdrop-blur">
+              <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-xs md:text-sm font-medium text-gray-500 uppercase tracking-wide">
                     Tệp đã tải lên
                   </h4>
-                  <p className="text-base font-semibold text-gray-800">
+                  <p className="text-sm md:text-base font-semibold text-gray-800 truncate">
                     {uploadedFile.name}
                   </p>
                   <p className="text-xs text-gray-500">
@@ -299,25 +308,31 @@ const ResumeAnalyzer = () => {
                 <button
                   type="button"
                   onClick={reset}
-                  className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 cursor-pointer ">
+                  className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-3 md:px-4 py-2 text-xs md:text-sm font-medium text-gray-600 hover:bg-gray-100 cursor-pointer w-full sm:w-auto justify-center">
                   <RotateCcw size={16} />
-                  Tải lại CV khác
+                  <span className="hidden sm:inline">Tải lại CV khác</span>
+                  <span className="sm:hidden">Tải CV khác</span>
                 </button>
               </div>
 
               {isLoading && (
-                <div className="flex items-center gap-3 rounded-xl border border-dashed border-primary-200 bg-primary-50/60 px-4 py-3 text-sm text-primary-700">
-                  <LoaderCircle className="h-5 w-5 animate-spin" />
-                  Đang phân tích CV, vui lòng chờ...
+                <div className="flex items-center gap-2 md:gap-3 rounded-lg md:rounded-xl border border-dashed border-primary-200 bg-primary-50/60 px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm text-primary-700">
+                  <LoaderCircle className="h-4 w-4 md:h-5 md:w-5 animate-spin flex-shrink-0" />
+                  <span className="hidden sm:inline">
+                    Đang phân tích CV, vui lòng chờ...
+                  </span>
+                  <span className="sm:hidden">Đang phân tích...</span>
                 </div>
               )}
 
               {errorMsg && !isLoading && (
-                <div className="flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
-                  <XCircle className="mt-0.5 h-5 w-5" />
-                  <div>
+                <div className="flex items-start gap-2 md:gap-3 rounded-lg md:rounded-xl border border-red-200 bg-red-50 px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm text-red-600">
+                  <XCircle className="mt-0.5 h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
                     <p className="font-medium">Không thể phân tích CV</p>
-                    <p className="mt-1 text-xs text-red-500">{errorMsg}</p>
+                    <p className="mt-1 text-xs text-red-500 break-words">
+                      {errorMsg}
+                    </p>
                   </div>
                 </div>
               )}
@@ -328,19 +343,19 @@ const ResumeAnalyzer = () => {
         <AnimatePresence>
           {analysis && !errorMsg && (
             <motion.div
-              className="mt-10 space-y-8"
+              className="mt-6 md:mt-10 space-y-4 md:space-y-8"
               key="analysis-block"
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 24 }}
               transition={{ duration: 0.35, ease: "easeOut" }}>
-              <section className="rounded-2xl border border-primary-100 bg-white p-6 shadow-sm">
-                <header className="flex flex-wrap items-center justify-between gap-4">
+              <section className="rounded-xl md:rounded-2xl border border-primary-100 bg-white p-4 md:p-6 shadow-sm">
+                <header className="flex flex-wrap items-center justify-between gap-3 md:gap-4">
                   <div>
                     <p className="text-xs font-medium uppercase tracking-wide text-primary-500">
                       Điểm tổng quan
                     </p>
-                    <h2 className="mt-1 text-3xl font-semibold text-gray-900">
+                    <h2 className="mt-1 text-2xl md:text-3xl font-semibold text-gray-900">
                       {analysis?.overallScore || "0/10"}
                     </h2>
                   </div>

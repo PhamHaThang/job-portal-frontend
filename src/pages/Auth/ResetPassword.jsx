@@ -6,7 +6,9 @@ import { API_PATHS } from "../../utils/apiPaths";
 import { motion } from "framer-motion";
 import { AlertCircle, Loader, Eye, EyeOff, Lock } from "lucide-react";
 import toast from "react-hot-toast";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 const ResetPassword = () => {
+  useDocumentTitle("Đặt lại mật khẩu");
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const token = searchParams.get("token");

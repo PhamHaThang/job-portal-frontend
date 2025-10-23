@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft,
@@ -33,6 +33,7 @@ import {
 import { RESUME_TEMPLATES, THEME_COLOR_PALETTES } from "../../utils/data";
 import Modal from "../../components/ui/Modal";
 import ThemeSelector from "../../components/ui/ThemeSelector";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 const defaultTemplate = {
   theme: RESUME_TEMPLATES[0].id,
   colorPalette: THEME_COLOR_PALETTES.themeOne[0],
@@ -48,6 +49,7 @@ const STEP_FLOW = [
   { value: "additionalInfo", label: "Thông tin thêm" },
 ];
 const EditResume = () => {
+  useDocumentTitle("Chỉnh sửa CV");
   const { resumeId } = useParams();
   const navigate = useNavigate();
   const resumeRef = useRef(null);
@@ -652,8 +654,8 @@ const EditResume = () => {
   return (
     <>
       <div className="min-h-screen pb-20">
-        <div className="container mx-auto pt-24 px-4">
-          <div className="flex items-center justify-between gap-5 bg-white rounded-lg border border-primary-100 py-3 px-4 mb-4">
+        <div className="container mx-auto pt-20 md:pt-24 px-2 sm:px-4">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 md:gap-5 bg-white rounded-lg border border-primary-100 py-3 px-3 md:px-4 mb-4">
             <TitleInput
               title={resumeData.title}
               setTitle={(value) =>
@@ -661,54 +663,54 @@ const EditResume = () => {
               }
             />
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 md:gap-4 flex-wrap w-full md:w-auto">
               <button
-                className="px-3 py-2 cursor-pointer flex items-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-2 md:px-3 py-2 cursor-pointer flex items-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-xs md:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isLoading}
                 onClick={handleOpenThemeSelector}>
-                <Palette className="w-5 h-5" />
-                <span className="hidden md:block">Theme</span>
+                <Palette className="w-4 h-4 md:w-5 md:h-5" />
+                <span className="hidden sm:block">Theme</span>
               </button>
               <button
-                className="px-3 py-2 cursor-pointer flex items-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-2 md:px-3 py-2 cursor-pointer flex items-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-xs md:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isLoading}
                 onClick={handleDeleteResume}>
-                <Trash2 className="w-5 h-5" />
-                <span className="hidden md:block">Xóa</span>
+                <Trash2 className="w-4 h-4 md:w-5 md:h-5" />
+                <span className="hidden sm:block">Xóa</span>
               </button>
               <button
-                className="px-3 py-2 cursor-pointer flex items-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-2 md:px-3 py-2 cursor-pointer flex items-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-xs md:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isLoading}
                 onClick={() => setOpenPreviewModal(true)}>
-                <Download className="w-5 h-5" />
-                <span className="hidden md:block">Tải</span>
+                <Download className="w-4 h-4 md:w-5 md:h-5" />
+                <span className="hidden sm:block">Tải</span>
               </button>
               <button
-                className="px-3 py-2 cursor-pointer flex items-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-sm"
+                className="px-2 md:px-3 py-2 cursor-pointer flex items-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-xs md:text-sm whitespace-nowrap"
                 onClick={uploadResumeImages}
                 disabled={isLoading}>
-                <Save />
-                {isLoading ? "Đang lưu..." : "Lưu"}
+                <Save className="w-4 h-4 md:w-5 md:h-5" />
+                <span className="hidden sm:inline">
+                  {isLoading ? "Đang lưu..." : "Lưu"}
+                </span>
               </button>
               <button
-                className="px-3 py-2 cursor-pointer flex items-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-2 md:px-3 py-2 cursor-pointer flex items-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-xs md:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isLoading}
                 onClick={() => navigate(-1)}>
-                <ArrowLeft className="w-5 h-5" />
-                <span className="hidden md:block">Thoát</span>
+                <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
+                <span className="hidden sm:block">Thoát</span>
               </button>
             </div>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 pb-10">
-            <div className="bg-white rounded-lg border border-primary-100 p-4  ">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-5 pb-10">
+            <div className="bg-white rounded-lg border border-primary-100 p-3 md:p-4">
               <div className="flex flex-col gap-3">
                 <StepProgress progress={progress} />
                 <select
                   value={currentPage}
                   onChange={handleSelectStep}
-                  className="w-full rounded-md border border-primary-100 px-3 py-2 text-sm outline-none focus:border-primary-500  
-                      cursor-pointer
-                      ">
+                  className="w-full rounded-md border border-primary-100 px-3 py-2 text-xs md:text-sm outline-none focus:border-primary-500 cursor-pointer">
                   {STEP_FLOW.map((step) => (
                     <option key={step.value} value={step.value}>
                       {step.label}
@@ -729,25 +731,29 @@ const EditResume = () => {
                     </ul>
                   </div>
                 )}
-                <div className="flex items-end justify-end gap-3 mt-5 mb-5">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-end justify-end gap-2 sm:gap-3 mt-5 mb-5">
                   <button
-                    className="px-3 py-2 cursor-pointer flex items-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-3 py-2 cursor-pointer flex items-center justify-center gap-1 bg-primary-50 text-primary-600 rounded-md hover:bg-primary-100 font-medium text-xs md:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={goBack}
                     disabled={isLoading}>
-                    <ArrowLeft />
-                    Quay lại
+                    <ArrowLeft className="w-4 h-4" />
+                    <span>Quay lại</span>
                   </button>
 
                   <button
-                    className="px-3 py-2 cursor-pointer flex items-center gap-1 bg-linear-to-r from-primary-500 via-primary-600 to-primary-700 text-white rounded-md hover:bg-gradient-to-br font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-3 py-2 cursor-pointer flex items-center justify-center gap-1 bg-linear-to-r from-primary-500 via-primary-600 to-primary-700 text-white rounded-md hover:bg-gradient-to-br font-medium text-xs md:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={validateAndNext}
                     disabled={isLoading}>
-                    {currentPage === "additionalInfo" && <Download />}
-                    {currentPage === "additionalInfo"
-                      ? "Xem trước & Tải"
-                      : "Tiếp tục"}
+                    {currentPage === "additionalInfo" && (
+                      <Download className="w-4 h-4" />
+                    )}
+                    <span>
+                      {currentPage === "additionalInfo"
+                        ? "Xem trước & Tải"
+                        : "Tiếp tục"}
+                    </span>
                     {currentPage !== "additionalInfo" && (
-                      <ArrowLeft className="rotate-180" />
+                      <ArrowLeft className="rotate-180 w-4 h-4" />
                     )}
                   </button>
                 </div>
@@ -755,7 +761,7 @@ const EditResume = () => {
             </div>
             <div
               ref={resumeRef}
-              className="bg-white rounded-lg border border-primary-100 shadow-sm">
+              className="bg-white rounded-lg border border-primary-100 shadow-sm overflow-hidden">
               <RenderResume
                 templateId={resumeData?.template?.theme || ""}
                 resumeData={resumeData}
@@ -770,7 +776,7 @@ const EditResume = () => {
         isOpen={openThemeSelector}
         onClose={handleCloseThemeSelector}
         title="Chọn Theme CV">
-        <div className="w-[90vw] h-[80vh]">
+        <div className="w-[95vw] sm:w-[90vw] h-[85vh] sm:h-[80vh]">
           <ThemeSelector
             key={
               openThemeSelector
@@ -794,7 +800,7 @@ const EditResume = () => {
         onActionBtnClick={() => reactToPrintFn()}
         actionBtnIcon={<Download size={18} />}>
         <div
-          className="w-auto h-[90vh] flex   justify-center "
+          className="w-auto h-[85vh] sm:h-[90vh] flex justify-center"
           ref={resumeDownloadRef}>
           <RenderResume
             templateId={resumeData?.template?.theme || ""}

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import RoleInfoHeader from "../../components/ui/RoleInfoHeader";
 import { formatDate } from "../../utils/format";
 import axiosInstance from "../../utils/axiosInstance";
@@ -16,8 +16,10 @@ import {
   questionAnswerPrompt,
   parseJSONResponse,
 } from "../../utils/helper";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 
 const InterviewPrep = () => {
+  useDocumentTitle("Luyện Phỏng Vấn");
   const { sessionId } = useParams();
 
   const [sessionData, setSessionData] = useState(null);
@@ -176,22 +178,24 @@ const InterviewPrep = () => {
   }, []);
 
   return (
-    <div className="min-h-screen mt-24">
-      <RoleInfoHeader
-        role={sessionData?.role || ""}
-        topicsToFocus={sessionData?.topicsToFocus || ""}
-        experience={sessionData?.experience || ""}
-        questions={sessionData?.questions || []}
-        description={sessionData?.description || ""}
-        lastedUpdated={
-          sessionData?.updatedAt ? formatDate(sessionData.updatedAt) : ""
-        }
-      />
-      <div className="container mx-auto p-4 md:px-0">
-        <h2 className="text-xl font-semibold text-gray-900">
+    <div className="min-h-screen pt-20 md:pt-24 pb-20">
+      <div className="px-2 sm:px-4">
+        <RoleInfoHeader
+          role={sessionData?.role || ""}
+          topicsToFocus={sessionData?.topicsToFocus || ""}
+          experience={sessionData?.experience || ""}
+          questions={sessionData?.questions || []}
+          description={sessionData?.description || ""}
+          lastedUpdated={
+            sessionData?.updatedAt ? formatDate(sessionData.updatedAt) : ""
+          }
+        />
+      </div>
+      <div className="container mx-auto px-2 sm:px-4 mt-6">
+        <h2 className="text-lg md:text-xl font-semibold text-gray-900">
           Câu hỏi phỏng vấn
         </h2>
-        <div className="grid grid-cols-12 gap-4 mt-5 mb-10">
+        <div className="grid grid-cols-12 gap-3 md:gap-4 mt-4 md:mt-5 mb-10">
           <div
             className={`col-span-12 ${
               openLearnMoreDrawer ? "md:col-span-7" : "md:col-span-8"
@@ -230,18 +234,18 @@ const InterviewPrep = () => {
                         index === sessionData.questions.length - 1 && (
                           <div className="flex items-center justify-center">
                             <button
-                              className="flex items-center gap-3 bg-primary-600 text-white px-5 py-2 text-sm font-medium  mr-2 rounded-lg text-nowrap cursor-pointer hover:bg-primary-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                              className="flex items-center justify-center gap-2 bg-primary-600 text-white px-4 md:px-5 py-2 text-xs md:text-sm font-medium rounded-lg text-nowrap cursor-pointer hover:bg-primary-700 transition disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
                               disabled={isUpdateLoader || isLoading}
                               onClick={uploadMoreQuestions}>
                               {isUpdateLoader ? (
                                 <LoaderCircle
-                                  size={18}
+                                  size={16}
                                   className="animate-spin"
                                 />
                               ) : (
-                                <ListCollapse size={18} />
+                                <ListCollapse size={16} />
                               )}{" "}
-                              Tải thêm
+                              <span>Tải thêm</span>
                             </button>
                           </div>
                         )}

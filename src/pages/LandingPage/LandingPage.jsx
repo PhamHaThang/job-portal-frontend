@@ -1,12 +1,14 @@
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import Features from "./components/Features";
-import Analytics from "./components/Analytics";
-import Footer from "./components/Footer";
+import Hero from "../../components/ui/Hero";
+import Features from "../../components/ui/Features";
+import Analytics from "../../components/ui/Analytics";
+import Footer from "../../components/ui/Footer";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
+import Navbar from "../../components/ui/Navbar";
 const LandingPage = () => {
+  useDocumentTitle("Trang Chủ");
   return (
     <div className="min-h-screen">
-      <Header />
+      <Navbar />
       <Hero />
       <Features />
       <Analytics />

@@ -22,7 +22,9 @@ import {
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import useAuth from "../../hooks/useAuth";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 const SignUp = () => {
+  useDocumentTitle("Tạo tài khoản");
   const { login } = useAuth();
   const [formData, setFormData] = useState({
     fullName: "",

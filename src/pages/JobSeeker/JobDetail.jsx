@@ -15,7 +15,9 @@ import StatusBadge from "../../components/ui/StatusBadge";
 import toast from "react-hot-toast";
 import { formatCurrency, formatDate } from "../../utils/format";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 const JobDetail = () => {
+  useDocumentTitle("Chi tiết công việc");
   const { jobId } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -70,22 +72,20 @@ const JobDetail = () => {
     }
   }, [jobId, user]);
   return (
-    <div className="container mx-auto pt-24">
+    <div className="container mx-auto pt-20 md:pt-24 px-2 sm:px-4 pb-20">
       {loading ? (
         <LoadingSpinner />
       ) : (
         <>
           {jobDetails && (
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <div className="flex items-center gap-4 mb-8">
+            <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
+              <div className="flex items-center gap-3 md:gap-4 mb-6 md:mb-8">
                 <button
                   onClick={() => navigate(-1)}
-                  className="group flex items-center space-x-2 px-3.5 py-2.5 text-sm rounded-xl font-medium text-gray-600 bg-white/50 hover:text-white hover:bg-gradient-to-r hover:from-primary-500 hover:to-primary-600 border border-gray-200 hover:border-transparent shadow-lg transition-all shadow-gray-100 hover:shadow-xl
-                    transform hover:-translate-y-0.5 cursor-pointer
-                    ">
+                  className="group flex items-center space-x-2 px-3 md:px-3.5 py-2 md:py-2.5 text-xs md:text-sm rounded-xl font-medium text-gray-600 bg-white/50 hover:text-white hover:bg-gradient-to-r hover:from-primary-500 hover:to-primary-600 border border-gray-200 hover:border-transparent shadow-lg transition-all shadow-gray-100 hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer">
                   <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
                 </button>
-                <h1 className="text-2xl font-semibold leading-tight text-gray-900">
+                <h1 className="text-lg md:text-2xl font-semibold leading-tight text-gray-900">
                   Chi tiết công việc
                 </h1>
               </div>
@@ -103,14 +103,14 @@ const JobDetail = () => {
                         <Building2 className="h-8 w-8 text-gray-400" />
                       </div>
                     )}
-                    <div className="flex-1">
-                      <h1 className="text-lg lg:text-xl font-semibold mb-2 leading-tight text-gray-900">
+                    <div className="flex-1 min-w-0">
+                      <h1 className="text-base md:text-lg lg:text-xl font-semibold mb-2 leading-tight text-gray-900 line-clamp-2">
                         {jobDetails?.title}
                       </h1>
-                      <div className="flex items-center space-x-4 text-gray-600">
-                        <div className="flex items-center space-x-2">
-                          <MapPin className="h-4 w-4" />
-                          <span className="text-sm font-medium">
+                      <div className="flex items-center space-x-2 md:space-x-4 text-gray-600">
+                        <div className="flex items-center space-x-1 md:space-x-2">
+                          <MapPin className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0" />
+                          <span className="text-xs md:text-sm font-medium truncate">
                             {jobDetails?.location || "Địa điểm không xác định"}
                           </span>
                         </div>
@@ -120,23 +120,23 @@ const JobDetail = () => {
                       <StatusBadge status={jobDetails?.applicationStatus} />
                     ) : (
                       <button
-                        className="bg-gradient-to-r from-primary-50 to-primary-50 hover:from-primary-500 hover:to-primary-600 hover:text-white text-sm text-primary-700 px-6 py-2.5 rounded-xl shadow-md transition-all duration-200 font-semibold transform hover:-translate-y-0.5 cursor-pointer"
+                        className="bg-gradient-to-r from-primary-50 to-primary-50 hover:from-primary-500 hover:to-primary-600 hover:text-white text-xs md:text-sm text-primary-700 px-4 md:px-6 py-2 md:py-2.5 rounded-xl shadow-md transition-all duration-200 font-semibold transform hover:-translate-y-0.5 cursor-pointer whitespace-nowrap"
                         onClick={applyToJob}>
                         Ứng tuyển
                       </button>
                     )}
                   </div>
 
-                  <div className="flex flex-wrap gap-3">
-                    <span className="px-4 py-2 bg-blue-50 text-blue-700 font-semibold rounded-full border border-blue-200">
+                  <div className="flex flex-wrap gap-2 md:gap-3">
+                    <span className="px-3 md:px-4 py-1.5 md:py-2 bg-blue-50 text-blue-700 font-semibold text-xs md:text-sm rounded-full border border-blue-200">
                       {jobDetails?.category || "Chưa xác định"}
                     </span>
-                    <span className="px-4 py-2 bg-purple-50 text-purple-700 font-semibold rounded-full border border-purple-200">
+                    <span className="px-3 md:px-4 py-1.5 md:py-2 bg-purple-50 text-purple-700 font-semibold text-xs md:text-sm rounded-full border border-purple-200">
                       {jobDetails?.type || "Chưa xác định"}
                     </span>
-                    <div className="flex items-center space-x-1 px-4 py-2 bg-gray-50 text-gray-700 font-semibold text-sm rounded-full border border-gray-200">
-                      <Clock className="h-4 w-4" />
-                      <span>
+                    <div className="flex items-center space-x-1 px-3 md:px-4 py-1.5 md:py-2 bg-gray-50 text-gray-700 font-semibold text-xs md:text-sm rounded-full border border-gray-200">
+                      <Clock className="h-3 w-3 md:h-4 md:w-4" />
+                      <span className="truncate">
                         {jobDetails?.createdAt
                           ? formatDate(jobDetails?.createdAt)
                           : "Chưa xác định"}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import { motion } from "framer-motion";
 import axiosInstance from "../../utils/axiosInstance";
 import {
@@ -14,7 +14,9 @@ import { validateEmail, validatePassword } from "../../utils/helper";
 import { API_PATHS } from "../../utils/apiPaths";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 const Login = () => {
+  useDocumentTitle("Đăng nhập");
   const navigate = useNavigate();
   const { login } = useAuth();
   const [formData, setFormData] = useState({

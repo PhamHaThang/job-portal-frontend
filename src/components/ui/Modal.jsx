@@ -34,7 +34,7 @@ const Modal = ({
             {showActionBtn && (
               <button
                 onClick={() => onActionBtnClick()}
-                className=" mr-12 px-4 py-2 bg-primary-600 text-white rounded-md flex items-center gap-2 cursor-pointer hover:bg-primary-700 font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                className=" mr-12 px-4 text-sm py-2 bg-primary-600 text-white rounded-md flex items-center gap-2 cursor-pointer hover:bg-primary-700 font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
                 {actionBtnIcon}
                 {actionBtnText}
               </button>

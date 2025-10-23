@@ -82,9 +82,11 @@ const App = () => {
       <Toaster
         position="top-center"
         toastOptions={{
-          className: "",
           style: {
-            fontSize: "13px",
+            fontSize: "14px",
+            borderRadius: "12px",
+            background: "#ffffff",
+            color: "#0f172a",
           },
         }}
       />

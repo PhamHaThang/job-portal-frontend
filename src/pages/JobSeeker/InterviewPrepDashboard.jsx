@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
@@ -11,7 +11,9 @@ import Modal from "../../components/ui/Modal";
 import CreateSessionForm from "../../components/ui/CreateSessionForm";
 import DeleteAlertContent from "../../components/ui/DeleteAlertContent";
 import toast from "react-hot-toast";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 const InterviewPrepDashboard = () => {
+  useDocumentTitle("Luyện Phỏng Vấn");
   const navigate = useNavigate();
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [sessions, setSessions] = useState([]);
@@ -66,14 +68,13 @@ const InterviewPrepDashboard = () => {
   }
   return (
     <>
-      <div className="min-h-screen mt-16">
-        <div className="conatainer mx-auto pt-4 pb-4">
+      <div className="min-h-screen pt-20 md:pt-24 pb-24">
+        <div className="container mx-auto px-2 sm:px-4">
           <TitlePage
             title="Chuẩn bị phỏng vấn cùng AI"
-            description="Nâng cao kỹ năng phỏng vấn của bạn với các buổi mô phỏng phỏng
-                  vấn do AI hỗ trợ."
+            description="Nâng cao kỹ năng phỏng vấn của bạn với các buổi mô phỏng phỏng vấn do AI hỗ trợ."
           />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-7 pt-1 pb-6 px-4 md:px-0">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 lg:gap-6 mt-6">
             {sessions?.map((data, index) => (
               <SummaryCard
                 key={`session-card-${index}`}
@@ -90,11 +91,7 @@ const InterviewPrepDashboard = () => {
           </div>
           <button
             disabled={isLoading}
-            className="
-              h-12  flex items-center justify-center gap-3 px-7 py-2.5 bg-linear-to-r from-primary-500 to-primary-600 text-sm text-white font-semibold rounded-full shadow-md ransition-all duration-200 cursor-pointer mx-auto hover:shadow-xl hover:shadow-primary-300
-              disabled:opacity-50 disabled:cursor-not-allowed
-              hover:bg-linear-to-br fixed bottom-8 md:bottom-10 right-8 md:right-10
-              "
+            className="h-12 md:h-14 flex items-center justify-center gap-2 md:gap-3 px-5 md:px-7 py-2.5 bg-linear-to-r from-primary-500 to-primary-600 text-xs md:text-sm text-white font-semibold rounded-full shadow-md transition-all duration-200 cursor-pointer mx-auto hover:shadow-xl hover:shadow-primary-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-linear-to-br fixed bottom-6 md:bottom-10 right-4 md:right-10 z-40"
             onClick={() => setOpenCreateModal(true)}>
             <Plus size={24} />
             Thêm mới

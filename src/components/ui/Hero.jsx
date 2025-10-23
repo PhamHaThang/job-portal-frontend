@@ -49,7 +49,7 @@ const Hero = () => {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="bg-white border-2 border-secondary-200 text-secondary-700 px-8 py-4 rounded-xl  font-semibold text-lg duration-300 shadow-sm hover:border-secondary-300  hover:bg-secondary-50 transition-all duration-300 hover:shadow-md cursor-pointer"
+              className="bg-white border-2 border-secondary-200 text-secondary-700 px-8 py-4 rounded-xl font-semibold text-lg shadow-sm hover:border-secondary-300 hover:bg-secondary-50 transition-all duration-300 hover:shadow-md cursor-pointer"
               onClick={() =>
                 navigate(
                   isAuthenticated && user?.role === "employer"

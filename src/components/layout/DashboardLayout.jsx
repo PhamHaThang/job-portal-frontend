@@ -14,19 +14,20 @@ const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const getActiveNavItem = () => {
-    const path = location.pathname;
-    if (path === "/employer-dashboard") return "employer-dashboard";
-    if (path.startsWith("/post-job")) return "post-job";
-    if (path.startsWith("/manage-jobs") || path.startsWith("/applicants"))
-      return "manage-jobs";
-    if (path.startsWith("/employer-profile")) return "employer-profile";
-    if (path.startsWith("/employer-change-password"))
-      return "employer-change-password";
-    return "employer-dashboard";
-  };
-  const [activeNavItem, setActiveNavItem] = useState(getActiveNavItem());
+  const [activeNavItem, setActiveNavItem] = useState("employer-dashboard");
+
   useEffect(() => {
+    const getActiveNavItem = () => {
+      const path = location.pathname;
+      if (path === "/employer-dashboard") return "employer-dashboard";
+      if (path.startsWith("/post-job")) return "post-job";
+      if (path.startsWith("/manage-jobs") || path.startsWith("/applicants"))
+        return "manage-jobs";
+      if (path.startsWith("/employer-profile")) return "employer-profile";
+      if (path.startsWith("/employer-change-password"))
+        return "employer-change-password";
+      return "employer-dashboard";
+    };
     setActiveNavItem(getActiveNavItem());
   }, [location.pathname]);
   useEffect(() => {
@@ -135,10 +136,8 @@ const DashboardLayout = () => {
               </button>
             )}
             <div>
-              <p className="text-sm text-gray-500 text-gray-900">
-                Chào mừng quay trở lại!
-              </p>
-              <h1 className=" text-base font-semibold text-gray-900hidden sm:block">
+              <p className="text-sm text-gray-500">Chào mừng quay trở lại!</p>
+              <h1 className="text-base font-semibold text-gray-900 hidden sm:block">
                 {formatName(user.name)}
               </h1>
             </div>

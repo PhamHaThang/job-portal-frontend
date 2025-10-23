@@ -1,12 +1,14 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { use, useState } from "react";
 import { validateEmail } from "../../utils/helper";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { motion } from "framer-motion";
 import { AlertCircle, Loader, Mail } from "lucide-react";
 import toast from "react-hot-toast";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 const ForgetPassword = () => {
+  useDocumentTitle("Quên mật khẩu");
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",

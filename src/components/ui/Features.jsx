@@ -1,4 +1,4 @@
-import { jobSeekerFeatures, employerFeatures } from "../../../utils/data";
+import { jobSeekerFeatures, employerFeatures } from "../../utils/data";
 const Features = () => {
   return (
     <section className="py-20 bg-white relative overflow-hidden">

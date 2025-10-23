@@ -1,7 +1,7 @@
 import useAuth from "../../hooks/useAuth";
 import Navbar from "../ui/Navbar";
 import { Outlet } from "react-router-dom";
-import Footer from "../../pages/LandingPage/components/Footer";
+import Footer from "../ui/Footer";
 const UserLayout = () => {
   const { user } = useAuth();
   return (
