@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { use, useState } from "react";
+import { useState } from "react";
 import { validateEmail } from "../../utils/helper";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
