@@ -20,6 +20,7 @@ import EmployerChangePassword from "./pages/Employer/EmployerChangePassword";
 import UserChangePassword from "./pages/JobSeeker/UserChangePassword";
 import ResumeDashboard from "./pages/JobSeeker/ResumeDashboard";
 import EditResume from "./pages/JobSeeker/EditResume";
+import MyApplications from "./pages/JobSeeker/MyApplications";
 import UserLayout from "./components/layout/UserLayout";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import InterviewPrep from "./pages/JobSeeker/InterviewPrep";
@@ -41,6 +42,7 @@ const App = () => {
               <Route path="/jobs/:jobId" element={<JobDetail />} />
               <Route path="/find-jobs" element={<JobSeekerDashboard />} />
               <Route path="/saved-jobs" element={<SavedJobs />} />
+              <Route path="/applications/my" element={<MyApplications />} />
               <Route path="/profile" element={<UserProfile />} />
               <Route path="/change-password" element={<UserChangePassword />} />
               <Route path="/resume-builder" element={<ResumeDashboard />} />

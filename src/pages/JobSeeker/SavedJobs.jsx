@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import JobCard from "../../components/ui/JobCard";
 import toast from "react-hot-toast";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
+import Pagination from "../../components/ui/Pagination";
 import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 const SavedJobs = () => {
   useDocumentTitle("Công việc đã lưu");
@@ -15,6 +16,8 @@ const SavedJobs = () => {
   const [savedJobList, setSavedJobList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [viewMode, setViewMode] = useState("grid");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(6);
   const getSavedJobs = async () => {
     try {
       setLoading(true);
@@ -48,6 +51,11 @@ const SavedJobs = () => {
       getSavedJobs();
     }
   }, [user]);
+
+  const totalPages = Math.ceil(savedJobList.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedJobs = savedJobList.slice(startIndex, endIndex);
   return (
     <div className="pt-20 md:pt-24 px-2 sm:px-4 pb-8">
       {loading && <LoadingSpinner />}
@@ -108,22 +116,42 @@ const SavedJobs = () => {
                 </button>
               </div>
             ) : (
-              <div
-                className={
-                  viewMode === "grid"
-                    ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-3 md:gap-4 lg:gap-6"
-                    : "space-y-3 md:space-y-4 lg:space-y-6"
-                }>
-                {savedJobList.map((savedJob) => (
-                  <JobCard
-                    key={savedJob._id}
-                    job={savedJob?.job}
-                    onClick={() => navigate(`/jobs/${savedJob?.job._id}`)}
-                    onToggleSave={() => handleUnsaveJob(savedJob?.job._id)}
-                    saved
-                  />
-                ))}
-              </div>
+              <>
+                <div
+                  className={
+                    viewMode === "grid"
+                      ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-3 md:gap-4 lg:gap-6"
+                      : "space-y-3 md:space-y-4 lg:space-y-6"
+                  }>
+                  {paginatedJobs.map((savedJob) => (
+                    <JobCard
+                      key={savedJob._id}
+                      job={savedJob?.job}
+                      onClick={() => navigate(`/jobs/${savedJob?.job._id}`)}
+                      onToggleSave={() => handleUnsaveJob(savedJob?.job._id)}
+                      saved
+                    />
+                  ))}
+                </div>
+
+                {/* Pagination Component */}
+                {totalPages > 1 && (
+                  <>
+                    <div className="mt-6 text-center text-sm text-gray-600">
+                      Hiển thị {startIndex + 1}-
+                      {Math.min(endIndex, savedJobList.length)} của{" "}
+                      {savedJobList.length} công việc đã lưu
+                    </div>
+                    <div className="mt-4 flex justify-center">
+                      <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={setCurrentPage}
+                      />
+                    </div>
+                  </>
+                )}
+              </>
             )}
           </div>
         </div>

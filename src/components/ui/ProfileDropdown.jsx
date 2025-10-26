@@ -16,7 +16,8 @@ const ProfileDropdown = ({
     <div className="relative">
       <button
         onClick={onToggle}
-        className="flex items-center space-x-3 p-2 rounded-xl hover:bg-gray-100 transition-colors duration-200 cursor-pointer">
+        className="flex items-center space-x-3 p-2 rounded-xl hover:bg-gray-100 transition-colors duration-200 cursor-pointer"
+      >
         {avatar ? (
           <img
             src={avatar}
@@ -46,9 +47,18 @@ const ProfileDropdown = ({
                 userRole === "jobseeker" ? "/profile" : "/employer-profile"
               )
             }
-            className="block px-4 py-2 mt-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors duration-200">
+            className="block px-4 py-2 mt-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors duration-200"
+          >
             Hồ sơ của tôi
           </a>
+          {userRole === "jobseeker" && (
+            <a
+              onClick={() => navigate("/applications/my")}
+              className="block px-4 py-2 mt-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors duration-200"
+            >
+              Đơn ứng tuyển của tôi
+            </a>
+          )}
           <a
             onClick={() =>
               navigate(
@@ -57,14 +67,16 @@ const ProfileDropdown = ({
                   : "/employer-change-password"
               )
             }
-            className="block px-4 py-2 mt-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors duration-200">
+            className="block px-4 py-2 mt-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors duration-200"
+          >
             Đổi mật khẩu
           </a>
           <div className="border-t border-gray-100 mt-2 pt-2">
             <a
               href="#"
               onClick={onLogout}
-              className="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 cursor-pointer transition-colors duration-200">
+              className="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 cursor-pointer transition-colors duration-200"
+            >
               Đăng xuất
             </a>
           </div>

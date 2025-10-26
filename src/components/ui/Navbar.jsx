@@ -6,6 +6,7 @@ import logo from "../../assets/logo.png";
 import { Bookmark, Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import ProfileDropdown from "./ProfileDropdown";
+import NotificationBell from "./NotificationBell";
 const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -60,7 +61,8 @@ const Navbar = () => {
                 isActiveRoute("/find-jobs")
                   ? "text-primary-600 border-primary-600 font-semibold"
                   : "text-secondary-600 hover:text-secondary-900 font-medium "
-              }`}>
+              }`}
+            >
               Tìm việc
             </a>
 
@@ -72,7 +74,8 @@ const Navbar = () => {
                 isActiveRoute("/resume-builder")
                   ? "text-primary-600 border-primary-600 font-semibold"
                   : "text-secondary-600 hover:text-secondary-900 font-medium  "
-              }`}>
+              }`}
+            >
               Tạo CV
             </a>
             <a
@@ -83,7 +86,8 @@ const Navbar = () => {
                 isActiveRoute("/interview-prep")
                   ? "text-primary-600 border-primary-600 font-semibold"
                   : "text-secondary-600 hover:text-secondary-900 font-medium  "
-              }`}>
+              }`}
+            >
               Luyện phỏng vấn
             </a>
             <a
@@ -94,7 +98,8 @@ const Navbar = () => {
                 isActiveRoute("/resume-analyzer")
                   ? "text-primary-600 border-primary-600 font-semibold"
                   : "text-secondary-600 hover:text-secondary-900 font-medium  "
-              }`}>
+              }`}
+            >
               Đánh giá CV
             </a>
             {(!isAuthenticated ||
@@ -107,22 +112,29 @@ const Navbar = () => {
                   isActiveRoute("/employer-dashboard")
                     ? "text-primary-600 border-primary-600 font-semibold"
                     : "text-secondary-600 hover:text-secondary-900 font-medium  "
-                }`}>
+                }`}
+              >
                 Đăng tin
               </a>
             )}
           </nav>
           <div className="flex items-center space-x-2 sm:space-x-3">
-            {user && user.role === "jobseeker" && (
-              <button
-                className={`p-1.5 sm:p-2 rounded-xl transition-colors duration-200 relative cursor-pointer ${
-                  location.pathname === "/saved-jobs"
-                    ? " text-primary-600"
-                    : "hover:bg-gray-100 text-gray-500"
-                }`}
-                onClick={() => navigate("/saved-jobs")}>
-                <Bookmark className="h-4 w-4 sm:h-5 sm:w-5" />
-              </button>
+            {user && (
+              <>
+                <NotificationBell />
+                {user.role === "jobseeker" && (
+                  <button
+                    className={`p-1.5 sm:p-2 rounded-xl transition-colors duration-200 relative cursor-pointer ${
+                      location.pathname === "/saved-jobs"
+                        ? " text-primary-600"
+                        : "hover:bg-gray-100 text-gray-500"
+                    }`}
+                    onClick={() => navigate("/saved-jobs")}
+                  >
+                    <Bookmark className="h-4 w-4 sm:h-5 sm:w-5" />
+                  </button>
+                )}
+              </>
             )}
             {isAuthenticated ? (
               <ProfileDropdown
@@ -141,19 +153,22 @@ const Navbar = () => {
               <>
                 <a
                   href="/login"
-                  className="hidden sm:block text-gray-600 hover:text-gray-900 transition-colors font-medium px-3 md:px-4 py-2 rounded-lg hover:bg-gray-50 duration-200 text-sm">
+                  className="hidden sm:block text-gray-600 hover:text-gray-900 transition-colors font-medium px-3 md:px-4 py-2 rounded-lg hover:bg-gray-50 duration-200 text-sm"
+                >
                   Đăng nhập
                 </a>
                 <a
                   href="/signup"
-                  className="bg-gradient-to-r from-primary-600 to-secondary-600 text-white font-medium px-3 md:px-4 py-2 rounded-lg shadow-sm hover:shadow-md hover:from-primary-700 hover:to-secondary-700 transition-all duration-300 text-xs sm:text-sm">
+                  className="bg-gradient-to-r from-primary-600 to-secondary-600 text-white font-medium px-3 md:px-4 py-2 rounded-lg shadow-sm hover:shadow-md hover:from-primary-700 hover:to-secondary-700 transition-all duration-300 text-xs sm:text-sm"
+                >
                   Đăng ký
                 </a>
               </>
             )}
             <button
               className="xl:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
               {mobileMenuOpen ? (
                 <X className="h-5 w-5" />
               ) : (
@@ -171,7 +186,8 @@ const Navbar = () => {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
-              className="xl:hidden border-t border-gray-100 overflow-hidden">
+              className="xl:hidden border-t border-gray-100 overflow-hidden"
+            >
               <div className="py-4 space-y-2">
                 <a
                   onClick={() => {
@@ -182,7 +198,8 @@ const Navbar = () => {
                     isActiveRoute("/find-jobs")
                       ? "bg-primary-50 text-primary-600 font-semibold"
                       : "text-secondary-600 hover:bg-gray-50 font-medium"
-                  }`}>
+                  }`}
+                >
                   Tìm việc
                 </a>
                 <a
@@ -194,7 +211,8 @@ const Navbar = () => {
                     isActiveRoute("/resume-builder")
                       ? "bg-primary-50 text-primary-600 font-semibold"
                       : "text-secondary-600 hover:bg-gray-50 font-medium"
-                  }`}>
+                  }`}
+                >
                   Tạo CV
                 </a>
                 <a
@@ -206,7 +224,8 @@ const Navbar = () => {
                     isActiveRoute("/interview-prep")
                       ? "bg-primary-50 text-primary-600 font-semibold"
                       : "text-secondary-600 hover:bg-gray-50 font-medium"
-                  }`}>
+                  }`}
+                >
                   Luyện phỏng vấn
                 </a>
                 <a
@@ -218,7 +237,8 @@ const Navbar = () => {
                     isActiveRoute("/resume-analyzer")
                       ? "bg-primary-50 text-primary-600 font-semibold"
                       : "text-secondary-600 hover:bg-gray-50 font-medium"
-                  }`}>
+                  }`}
+                >
                   Đánh giá CV
                 </a>
                 {(!isAuthenticated ||
@@ -234,14 +254,16 @@ const Navbar = () => {
                       isActiveRoute("/employer-dashboard")
                         ? "bg-primary-50 text-primary-600 font-semibold"
                         : "text-secondary-600 hover:bg-gray-50 font-medium"
-                    }`}>
+                    }`}
+                  >
                     Đăng tin
                   </a>
                 )}
                 {!isAuthenticated && (
                   <a
                     href="/login"
-                    className="block px-4 py-2 text-center bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition-colors">
+                    className="block px-4 py-2 text-center bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition-colors"
+                  >
                     Đăng nhập
                   </a>
                 )}

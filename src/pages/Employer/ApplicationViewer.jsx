@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Avatar from "../../components/ui/Avatar";
 import { formatDate } from "../../utils/format";
 import StatusBadge from "../../components/ui/StatusBadge";
@@ -19,7 +19,8 @@ import ApplicantProfileReview from "../../components/ui/ApplicantProfileReview";
 const ApplicationViewer = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const jobId = location.state?.jobId || null;
+  const [searchParams] = useSearchParams();
+  const jobId = location.state?.jobId || searchParams.get("jobId") || null;
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(false);
   const [seletedApplicant, setSelectedApplicant] = useState(null);
@@ -79,7 +80,8 @@ const ApplicationViewer = () => {
             <div className="flex items-center gap-4 mb-4 sm:mb-0">
               <button
                 onClick={() => navigate("/manage-jobs")}
-                className="group flex items-center space-x-2 px-3 py-2 font-medium text-sm text-gray-600 hover:text-white bg-white/50 hover:bg-gradient-to-r hover:from-primary-500 hover:to-primary-600 border border-gray-200 hover:border-transparent rounded-xl transition-all duration-300 shadow-lg shadow-gray-100 hover:shadow-xl cursor-pointer">
+                className="group flex items-center space-x-2 px-3 py-2 font-medium text-sm text-gray-600 hover:text-white bg-white/50 hover:bg-gradient-to-r hover:from-primary-500 hover:to-primary-600 border border-gray-200 hover:border-transparent rounded-xl transition-all duration-300 shadow-lg shadow-gray-100 hover:shadow-xl cursor-pointer"
+              >
                 <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
                 <span>Quay lại</span>
               </button>
@@ -106,7 +108,8 @@ const ApplicationViewer = () => {
                 ({ job, applications }) => (
                   <div
                     className="bg-white rounded-xl shadow-md overflow-hidden"
-                    key={job._id}>
+                    key={job._id}
+                  >
                     <div className="bg-gradient-to-r from-primary-500 to-primary-600 px-6 py-4">
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
@@ -140,7 +143,8 @@ const ApplicationViewer = () => {
                         {applications.map((application) => (
                           <div
                             key={application._id}
-                            className="flex flex-col md:flex-row md:items-center justify-between border border-gray-200 p-4 rounded-lg hover:bg-gray-50 transition-colors">
+                            className="flex flex-col md:flex-row md:items-center justify-between border border-gray-200 p-4 rounded-lg hover:bg-gray-50 transition-colors"
+                          >
                             <div className="flex items-center gap-4 ">
                               <div className="flex-shrink-0">
                                 {application.applicant.avatar ? (
@@ -185,7 +189,8 @@ const ApplicationViewer = () => {
                                   )
                                 }
                                 className="inline-flex items-center gap-2 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-lg px-3 py-2 transition-colors cursor-pointer
-                                ">
+                                "
+                              >
                                 <Download className="h-4 w-4" />
                                 Tải CV
                               </button>
@@ -193,7 +198,8 @@ const ApplicationViewer = () => {
                                 onClick={() =>
                                   setSelectedApplicant(application)
                                 }
-                                className="inline-flex items-center gap-2 bg-gray-100 text-gray-700 hover:bg-gray-200  text-sm font-medium rounded-lg px-3 py-2 transition-colors cursor-pointer">
+                                className="inline-flex items-center gap-2 bg-gray-100 text-gray-700 hover:bg-gray-200  text-sm font-medium rounded-lg px-3 py-2 transition-colors cursor-pointer"
+                              >
                                 <Eye className="h-4 w-4" />
                                 Xem chi tiết
                               </button>
@@ -216,7 +222,8 @@ const ApplicationViewer = () => {
             handleClose={() => {
               setSelectedApplicant(null);
               fetchApplications();
-            }}></ApplicantProfileReview>
+            }}
+          ></ApplicantProfileReview>
         )}
       </div>
     </>

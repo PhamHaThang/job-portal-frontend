@@ -7,6 +7,7 @@ import { NAVIGATION_MENU } from "../../utils/data";
 import { NavigationItem } from "../ui/NavigationItem";
 import { formatName } from "../../utils/format";
 import ProfileDropdown from "../ui/ProfileDropdown";
+import NotificationBell from "../ui/NotificationBell";
 const DashboardLayout = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -73,7 +74,8 @@ const DashboardLayout = () => {
             : "translate-x-0"
         }  ${
           sidebarCollapsed ? "w-16" : "w-64"
-        } bg-white border-r border-gray-200`}>
+        } bg-white border-r border-gray-200`}
+      >
         <div className="flex items-center h-16 border-b border-gray-200 pl-6">
           {!sidebarCollapsed ? (
             <Link className="flex items-center space-x-3" to="/">
@@ -104,7 +106,8 @@ const DashboardLayout = () => {
           <button
             className="w-full flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-50
             hover:text-gray-900 transition-all duration-200 cursor-pointer"
-            onClick={logout}>
+            onClick={logout}
+          >
             <LogOut className="h-5 w-5 flex-shrink-0 text-gray-500" />
             {!sidebarCollapsed && <span className="ml-3">Đăng xuất</span>}
           </button>
@@ -119,15 +122,18 @@ const DashboardLayout = () => {
       <div
         className={`flex-1 flex flex-col transition-all duration-300 ${
           isMobile ? "ml-0" : sidebarCollapsed ? "ml-16" : "ml-64"
-        }`}>
+        }`}
+      >
         <header
           className="bg-white/80 backdrop-blur-sm border-b border-gray-200 h-16 flex items-center justify-between px-6
-        sticky top-0 z-30">
+        sticky top-0 z-30"
+        >
           <div className="flex items-center space-x-4">
             {isMobile && (
               <button
                 onClick={toggleSidebar}
-                className="p-2 rounded-xl hover:bg-gray-100 transition-colors duration-200">
+                className="p-2 rounded-xl hover:bg-gray-100 transition-colors duration-200"
+              >
                 {sidebarOpen ? (
                   <X className="h-5 w-5 text-gray-600" />
                 ) : (
@@ -143,6 +149,7 @@ const DashboardLayout = () => {
             </div>
           </div>
           <div className="flex items-center space-x-3">
+            <NotificationBell />
             <ProfileDropdown
               isOpen={profileDropdownOpen}
               onToggle={(e) => {

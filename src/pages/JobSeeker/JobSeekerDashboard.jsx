@@ -9,7 +9,7 @@ import useAuth from "../../hooks/useAuth";
 import FilterContent from "../../components/ui/FilterContent";
 import SearchHeader from "../../components/ui/SearchHeader";
 import JobCard from "../../components/ui/JobCard";
-import UserLayout from "../../components/layout/UserLayout";
+import Pagination from "../../components/ui/Pagination";
 import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 const JobSeekerDashboard = () => {
   useDocumentTitle("Tìm kiếm việc làm");
@@ -327,82 +327,18 @@ const JobSeekerDashboard = () => {
 
                 {/* Pagination controls */}
                 {totalPages > 1 && (
-                  <div className="mt-4 md:mt-6 flex items-center justify-between">
-                    <div className="flex-1 flex justify-between sm:hidden">
-                      <button
-                        onClick={() =>
-                          setCurrentPage(Math.max(1, currentPage - 1))
-                        }
-                        disabled={currentPage === 1}
-                        className="relative inline-flex items-center px-3 py-2 border border-gray-300 text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                        Trước
-                      </button>
-                      <button
-                        onClick={() =>
-                          setCurrentPage(Math.min(totalPages, currentPage + 1))
-                        }
-                        disabled={
-                          currentPage === totalPages || totalPages === 0
-                        }
-                        className="ml-2 relative inline-flex items-center px-3 py-2 border border-gray-300 text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                        Sau
-                      </button>
+                  <>
+                    <div className="mt-6 text-center text-sm text-gray-600">
+                      Hiển thị {startIndex + 1}-{Math.min(startIndex + itemsPerPage, jobs.length)} của {jobs.length} công việc
                     </div>
-                    <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                      <div>
-                        <p className="text-sm text-gray-700">
-                          Hiển thị{" "}
-                          <span className="font-medium">{startIndex + 1}</span>{" "}
-                          -{" "}
-                          <span className="font-medium">
-                            {Math.min(startIndex + itemsPerPage, jobs.length)}
-                          </span>{" "}
-                          trong{" "}
-                          <span className="font-medium">{jobs.length}</span> kết
-                          quả
-                        </p>
-                      </div>
-                      <div>
-                        <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
-                          <button
-                            onClick={() =>
-                              setCurrentPage(Math.max(1, currentPage - 1))
-                            }
-                            disabled={currentPage === 1}
-                            className="relative inline-flex items-center p-2 border text-sm font-medium rounded-l-md  text-gray-500 border-gray-300 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
-                            Trước
-                          </button>
-                          {Array.from(
-                            { length: totalPages },
-                            (_, idx) => idx + 1
-                          ).map((page) => (
-                            <button
-                              key={page}
-                              onClick={() => setCurrentPage(page)}
-                              className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium cursor-pointer ${
-                                page === currentPage
-                                  ? "z-10 bg-primary-50 border-primary-500 text-primary-600"
-                                  : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50"
-                              }`}>
-                              {page}
-                            </button>
-                          ))}
-                          <button
-                            onClick={() =>
-                              setCurrentPage(
-                                Math.min(totalPages, currentPage + 1)
-                              )
-                            }
-                            disabled={
-                              currentPage === totalPages || totalPages === 0
-                            }
-                            className="relative inline-flex items-center p-2 border text-sm font-medium rounded-r-md  text-gray-500 border-gray-300 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
-                            Sau
-                          </button>
-                        </nav>
-                      </div>
+                    <div className="mt-4 flex justify-center">
+                      <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={setCurrentPage}
+                      />
                     </div>
-                  </div>
+                  </>
                 )}
               </>
             )}
