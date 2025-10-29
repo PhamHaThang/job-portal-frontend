@@ -1,13 +1,8 @@
-import { useState, useEffect, useMemo } from "react";
-import {
-  ANALYZE_RESUME_PROMPT,
-  METRIC_CONFIG,
-  buildPresenceChecklist,
-} from "../../utils/data";
-import * as pdfjsLib from "pdfjs-dist";
-import pdfjsWorker from "pdfjs-dist/build/pdf.worker.min?url";
+import { useState, useMemo } from "react";
+import { METRIC_CONFIG, buildPresenceChecklist } from "../../utils/data";
 import TitlePage from "../../components/ui/TitlePage";
 import toast from "react-hot-toast";
+import axiosInstance from "../../utils/axiosInstance";
 import {
   AlertCircle,
   Award,
@@ -18,14 +13,11 @@ import {
   RotateCcw,
   XCircle,
 } from "lucide-react";
-import { jsonrepair } from "jsonrepair";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDocumentTitle } from "../../hooks/useDocumentTitle";
-pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
 const ResumeAnalyzer = () => {
   useDocumentTitle("Đánh giá CV");
-  const [aiReady, setAiReady] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadedFile, setUploadedFile] = useState(null);
   const [analysis, setAnalysis] = useState(null);
@@ -33,79 +25,26 @@ const ResumeAnalyzer = () => {
   const [presenceChecklist, setPresenceChecklist] = useState([]);
   const [errorMsg, setErrorMsg] = useState("");
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (window.puter?.ai?.chat) {
-        setAiReady(true);
-        clearInterval(interval);
-      }
-    }, 300);
-    return () => clearInterval(interval);
-  }, []);
-
   const metricList = useMemo(() => METRIC_CONFIG, []);
 
-  const extractPDFText = async (file) => {
-    const arrayBuffer = await file.arrayBuffer();
-    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  const analyzeResume = async (file) => {
+    const formData = new FormData();
+    formData.append("resume", file);
 
-    const pages = await Promise.all(
-      Array.from({ length: pdf.numPages }, (_, index) =>
-        pdf
-          .getPage(index + 1)
-          .then((page) =>
-            page
-              .getTextContent()
-              .then((content) =>
-                content.items
-                  .map((item) => (item.str ? item.str.trim() : ""))
-                  .join(" ")
-              )
-          )
-      )
-    );
+    const response = await axiosInstance.post("/resume-analysis", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
-    return pages.join("\n").replace(/\s+\n/g, "\n").trim();
-  };
-
-  const parseJSONResponse = (responseText) => {
-    try {
-      const repaired = jsonrepair(responseText);
-      const parsed = JSON.parse(repaired);
-      if (!parsed?.overallScore && !parsed?.error) {
-        throw new Error("Phản hồi AI không hợp lệ.");
-      }
-      return parsed;
-    } catch (error) {
-      throw new Error(
-        `Không thể đọc phản hồi từ AI. Chi tiết: ${error.message}`
-      );
+    if (!response.data.success) {
+      throw new Error(response.data.message || "Phân tích CV thất bại");
     }
-  };
 
-  const analyzeResume = async (text) => {
-    const prompt = ANALYZE_RESUME_PROMPT.replace("{{DOCUMENT_TEXT}}", text);
-
-    const response = await window.puter.ai.chat(
-      [
-        {
-          role: "system",
-          content:
-            "Bạn là trợ lý giúp phân tích sơ yếu lý lịch và trả về JSON hợp lệ.",
-        },
-        { role: "user", content: prompt },
-      ],
-      {
-        model: "gpt-5-nano",
-      }
-    );
-
-    const raw =
-      typeof response === "string"
-        ? response
-        : response?.message?.content || "";
-
-    return parseJSONResponse(raw);
+    return {
+      analysis: response.data.analysis,
+      extractedText: response.data.extractedText,
+    };
   };
 
   const handleFileUpload = async (event) => {
@@ -129,16 +68,10 @@ const ResumeAnalyzer = () => {
     setErrorMsg("");
 
     try {
-      const text = await extractPDFText(file);
-      setResumeText(text);
-      setPresenceChecklist(buildPresenceChecklist(text));
-      const result = await analyzeResume(text);
-      if (result.error) {
-        setErrorMsg(result.error);
-        setAnalysis(null);
-      } else {
-        setAnalysis(result);
-      }
+      const result = await analyzeResume(file);
+      setResumeText(result.extractedText);
+      setPresenceChecklist(buildPresenceChecklist(result.extractedText));
+      setAnalysis(result.analysis);
     } catch (error) {
       setErrorMsg(error.message);
       setAnalysis(null);
@@ -263,14 +196,14 @@ const ResumeAnalyzer = () => {
                 type="file"
                 accept="application/pdf"
                 className="hidden"
-                disabled={!aiReady || isLoading}
+                disabled={isLoading}
                 onChange={handleFileUpload}
               />
 
               <label
                 htmlFor="resume-upload"
                 className={`mt-4 md:mt-6 inline-flex items-center gap-2 rounded-full px-5 md:px-6 py-2.5 md:py-3 text-xs md:text-sm font-semibold transition ${
-                  !aiReady || isLoading
+                  isLoading
                     ? "cursor-not-allowed bg-gray-300 text-gray-500"
                     : "cursor-pointer bg-primary-600 text-white hover:bg-primary-700"
                 }`}>
@@ -284,12 +217,6 @@ const ResumeAnalyzer = () => {
                   "Chọn tệp PDF"
                 )}
               </label>
-
-              {!aiReady && (
-                <p className="mt-3 text-xs text-gray-400 px-2">
-                  Đang khởi tạo AI, vui lòng chờ trong giây lát...
-                </p>
-              )}
             </div>
           ) : (
             <div className="flex flex-col gap-3 md:gap-4 rounded-xl md:rounded-2xl border border-primary-100 bg-white/80 p-4 md:p-5 shadow-inner backdrop-blur">

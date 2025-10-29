@@ -14,16 +14,27 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
   useEffect(() => {
-    const handleClickOutside = () => {
-      if (profileDropdownOpen) {
+    const handleClickOutside = (event) => {
+      // Check if click is outside profile dropdown
+      const profileDropdown = document.querySelector("[data-profile-dropdown]");
+      if (
+        profileDropdownOpen &&
+        profileDropdown &&
+        !profileDropdown.contains(event.target)
+      ) {
         setProfileDropdownOpen(false);
       }
     };
-    document.addEventListener("click", handleClickOutside);
+
+    if (profileDropdownOpen) {
+      document.addEventListener("click", handleClickOutside);
+    }
+
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [profileDropdownOpen]);
+
   const isActiveRoute = (path) => {
     if (path === "/find-jobs") {
       return (
@@ -36,6 +47,9 @@ const Navbar = () => {
     }
     if (path === "/interview-prep") {
       return location.pathname.startsWith("/interview-prep");
+    }
+    if (path === "/resume-analyzer") {
+      return location.pathname.startsWith("/resume-analyzer");
     }
     return location.pathname === path;
   };
@@ -55,55 +69,55 @@ const Navbar = () => {
             </div>
           </Link>
           <nav className="hidden xl:flex items-center space-x-8">
-            <a
-              onClick={() => navigate("/find-jobs")}
-              className={`transition-colors cursor-pointer ${
-                isActiveRoute("/find-jobs")
-                  ? "text-primary-600 border-primary-600 font-semibold"
-                  : "text-secondary-600 hover:text-secondary-900 font-medium "
-              }`}
-            >
-              Tìm việc
-            </a>
-
-            <a
-              onClick={() =>
-                navigate(isAuthenticated ? "/resume-builder" : "/login")
-              }
-              className={`transition-colors cursor-pointer ${
-                isActiveRoute("/resume-builder")
-                  ? "text-primary-600 border-primary-600 font-semibold"
-                  : "text-secondary-600 hover:text-secondary-900 font-medium  "
-              }`}
-            >
-              Tạo CV
-            </a>
-            <a
-              onClick={() =>
-                navigate(isAuthenticated ? "/interview-prep" : "/login")
-              }
-              className={`transition-colors cursor-pointer ${
-                isActiveRoute("/interview-prep")
-                  ? "text-primary-600 border-primary-600 font-semibold"
-                  : "text-secondary-600 hover:text-secondary-900 font-medium  "
-              }`}
-            >
-              Luyện phỏng vấn
-            </a>
-            <a
-              onClick={() =>
-                navigate(isAuthenticated ? "/resume-analyzer" : "/login")
-              }
-              className={`transition-colors cursor-pointer ${
-                isActiveRoute("/resume-analyzer")
-                  ? "text-primary-600 border-primary-600 font-semibold"
-                  : "text-secondary-600 hover:text-secondary-900 font-medium  "
-              }`}
-            >
-              Đánh giá CV
-            </a>
             {(!isAuthenticated ||
-              (isAuthenticated && user && user.role === "employer")) && (
+              (isAuthenticated && user && user.role === "jobseeker")) && (
+              <>
+                <a
+                  onClick={() => navigate("/find-jobs")}
+                  className={`transition-colors cursor-pointer ${
+                    isActiveRoute("/find-jobs")
+                      ? "text-primary-600 border-primary-600 font-semibold"
+                      : "text-secondary-600 hover:text-secondary-900 font-medium "
+                  }`}>
+                  Tìm việc
+                </a>
+
+                <a
+                  onClick={() =>
+                    navigate(isAuthenticated ? "/resume-builder" : "/login")
+                  }
+                  className={`transition-colors cursor-pointer ${
+                    isActiveRoute("/resume-builder")
+                      ? "text-primary-600 border-primary-600 font-semibold"
+                      : "text-secondary-600 hover:text-secondary-900 font-medium  "
+                  }`}>
+                  Tạo CV
+                </a>
+                <a
+                  onClick={() =>
+                    navigate(isAuthenticated ? "/interview-prep" : "/login")
+                  }
+                  className={`transition-colors cursor-pointer ${
+                    isActiveRoute("/interview-prep")
+                      ? "text-primary-600 border-primary-600 font-semibold"
+                      : "text-secondary-600 hover:text-secondary-900 font-medium  "
+                  }`}>
+                  Luyện phỏng vấn
+                </a>
+                <a
+                  onClick={() =>
+                    navigate(isAuthenticated ? "/resume-analyzer" : "/login")
+                  }
+                  className={`transition-colors cursor-pointer ${
+                    isActiveRoute("/resume-analyzer")
+                      ? "text-primary-600 border-primary-600 font-semibold"
+                      : "text-secondary-600 hover:text-secondary-900 font-medium  "
+                  }`}>
+                  Đánh giá CV
+                </a>
+              </>
+            )}
+            {isAuthenticated && user && user.role === "employer" && (
               <a
                 onClick={() =>
                   navigate(isAuthenticated ? "/employer-dashboard" : "/login")
@@ -112,8 +126,21 @@ const Navbar = () => {
                   isActiveRoute("/employer-dashboard")
                     ? "text-primary-600 border-primary-600 font-semibold"
                     : "text-secondary-600 hover:text-secondary-900 font-medium  "
-                }`}
-              >
+                }`}>
+                Dashboard
+              </a>
+            )}
+            {(!isAuthenticated ||
+              (isAuthenticated && user && user.role === "employer")) && (
+              <a
+                onClick={() =>
+                  navigate(isAuthenticated ? "/post-job" : "/login")
+                }
+                className={`transition-colors cursor-pointer ${
+                  isActiveRoute("/post-job")
+                    ? "text-primary-600 border-primary-600 font-semibold"
+                    : "text-secondary-600 hover:text-secondary-900 font-medium  "
+                }`}>
                 Đăng tin
               </a>
             )}
@@ -129,46 +156,44 @@ const Navbar = () => {
                         ? " text-primary-600"
                         : "hover:bg-gray-100 text-gray-500"
                     }`}
-                    onClick={() => navigate("/saved-jobs")}
-                  >
+                    onClick={() => navigate("/saved-jobs")}>
                     <Bookmark className="h-4 w-4 sm:h-5 sm:w-5" />
                   </button>
                 )}
               </>
             )}
             {isAuthenticated ? (
-              <ProfileDropdown
-                isOpen={profileDropdownOpen}
-                onToggle={(e) => {
-                  e.stopPropagation();
-                  setProfileDropdownOpen(!profileDropdownOpen);
-                }}
-                avatar={user?.avatar || ""}
-                companyName={user?.name || ""}
-                email={user?.email || ""}
-                userRole={user?.role || ""}
-                onLogout={logout}
-              />
+              <div data-profile-dropdown>
+                <ProfileDropdown
+                  isOpen={profileDropdownOpen}
+                  onToggle={(e) => {
+                    e.stopPropagation();
+                    setProfileDropdownOpen(!profileDropdownOpen);
+                  }}
+                  avatar={user?.avatar || ""}
+                  companyName={user?.name || ""}
+                  email={user?.email || ""}
+                  userRole={user?.role || ""}
+                  onLogout={logout}
+                />
+              </div>
             ) : (
               <>
-                <a
-                  href="/login"
-                  className="hidden sm:block text-gray-600 hover:text-gray-900 transition-colors font-medium px-3 md:px-4 py-2 rounded-lg hover:bg-gray-50 duration-200 text-sm"
-                >
+                <button
+                  onClick={() => navigate("/login")}
+                  className="hidden sm:block text-gray-600 hover:text-gray-900 transition-colors font-medium px-3 md:px-4 py-2 rounded-lg hover:bg-gray-50 duration-200 text-sm">
                   Đăng nhập
-                </a>
-                <a
-                  href="/signup"
-                  className="bg-gradient-to-r from-primary-600 to-secondary-600 text-white font-medium px-3 md:px-4 py-2 rounded-lg shadow-sm hover:shadow-md hover:from-primary-700 hover:to-secondary-700 transition-all duration-300 text-xs sm:text-sm"
-                >
+                </button>
+                <button
+                  onClick={() => navigate("/signup")}
+                  className="bg-gradient-to-r from-primary-600 to-secondary-600 text-white font-medium px-3 md:px-4 py-2 rounded-lg shadow-sm hover:shadow-md hover:from-primary-700 hover:to-secondary-700 transition-all duration-300 text-xs sm:text-sm">
                   Đăng ký
-                </a>
+                </button>
               </>
             )}
             <button
               className="xl:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
               {mobileMenuOpen ? (
                 <X className="h-5 w-5" />
               ) : (
@@ -186,63 +211,68 @@ const Navbar = () => {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
-              className="xl:hidden border-t border-gray-100 overflow-hidden"
-            >
+              className="xl:hidden border-t border-gray-100 overflow-hidden">
               <div className="py-4 space-y-2">
-                <a
-                  onClick={() => {
-                    navigate("/find-jobs");
-                    setMobileMenuOpen(false);
-                  }}
-                  className={`block px-4 py-2 rounded-lg transition-colors cursor-pointer ${
-                    isActiveRoute("/find-jobs")
-                      ? "bg-primary-50 text-primary-600 font-semibold"
-                      : "text-secondary-600 hover:bg-gray-50 font-medium"
-                  }`}
-                >
-                  Tìm việc
-                </a>
-                <a
-                  onClick={() => {
-                    navigate(isAuthenticated ? "/resume-builder" : "/login");
-                    setMobileMenuOpen(false);
-                  }}
-                  className={`block px-4 py-2 rounded-lg transition-colors cursor-pointer ${
-                    isActiveRoute("/resume-builder")
-                      ? "bg-primary-50 text-primary-600 font-semibold"
-                      : "text-secondary-600 hover:bg-gray-50 font-medium"
-                  }`}
-                >
-                  Tạo CV
-                </a>
-                <a
-                  onClick={() => {
-                    navigate(isAuthenticated ? "/interview-prep" : "/login");
-                    setMobileMenuOpen(false);
-                  }}
-                  className={`block px-4 py-2 rounded-lg transition-colors cursor-pointer ${
-                    isActiveRoute("/interview-prep")
-                      ? "bg-primary-50 text-primary-600 font-semibold"
-                      : "text-secondary-600 hover:bg-gray-50 font-medium"
-                  }`}
-                >
-                  Luyện phỏng vấn
-                </a>
-                <a
-                  onClick={() => {
-                    navigate(isAuthenticated ? "/resume-analyzer" : "/login");
-                    setMobileMenuOpen(false);
-                  }}
-                  className={`block px-4 py-2 rounded-lg transition-colors cursor-pointer ${
-                    isActiveRoute("/resume-analyzer")
-                      ? "bg-primary-50 text-primary-600 font-semibold"
-                      : "text-secondary-600 hover:bg-gray-50 font-medium"
-                  }`}
-                >
-                  Đánh giá CV
-                </a>
                 {(!isAuthenticated ||
-                  (isAuthenticated && user && user.role === "employer")) && (
+                  (isAuthenticated && user && user.role === "jobseeker")) && (
+                  <>
+                    <a
+                      onClick={() => {
+                        navigate("/find-jobs");
+                        setMobileMenuOpen(false);
+                      }}
+                      className={`block px-4 py-2 rounded-lg transition-colors cursor-pointer ${
+                        isActiveRoute("/find-jobs")
+                          ? "bg-primary-50 text-primary-600 font-semibold"
+                          : "text-secondary-600 hover:bg-gray-50 font-medium"
+                      }`}>
+                      Tìm việc
+                    </a>
+                    <a
+                      onClick={() => {
+                        navigate(
+                          isAuthenticated ? "/resume-builder" : "/login"
+                        );
+                        setMobileMenuOpen(false);
+                      }}
+                      className={`block px-4 py-2 rounded-lg transition-colors cursor-pointer ${
+                        isActiveRoute("/resume-builder")
+                          ? "bg-primary-50 text-primary-600 font-semibold"
+                          : "text-secondary-600 hover:bg-gray-50 font-medium"
+                      }`}>
+                      Tạo CV
+                    </a>
+                    <a
+                      onClick={() => {
+                        navigate(
+                          isAuthenticated ? "/interview-prep" : "/login"
+                        );
+                        setMobileMenuOpen(false);
+                      }}
+                      className={`block px-4 py-2 rounded-lg transition-colors cursor-pointer ${
+                        isActiveRoute("/interview-prep")
+                          ? "bg-primary-50 text-primary-600 font-semibold"
+                          : "text-secondary-600 hover:bg-gray-50 font-medium"
+                      }`}>
+                      Luyện phỏng vấn
+                    </a>
+                    <a
+                      onClick={() => {
+                        navigate(
+                          isAuthenticated ? "/resume-analyzer" : "/login"
+                        );
+                        setMobileMenuOpen(false);
+                      }}
+                      className={`block px-4 py-2 rounded-lg transition-colors cursor-pointer ${
+                        isActiveRoute("/resume-analyzer")
+                          ? "bg-primary-50 text-primary-600 font-semibold"
+                          : "text-secondary-600 hover:bg-gray-50 font-medium"
+                      }`}>
+                      Đánh giá CV
+                    </a>
+                  </>
+                )}
+                {isAuthenticated && user && user.role === "employer" && (
                   <a
                     onClick={() => {
                       navigate(
@@ -254,18 +284,34 @@ const Navbar = () => {
                       isActiveRoute("/employer-dashboard")
                         ? "bg-primary-50 text-primary-600 font-semibold"
                         : "text-secondary-600 hover:bg-gray-50 font-medium"
-                    }`}
-                  >
+                    }`}>
+                    Dashboard
+                  </a>
+                )}
+                {(!isAuthenticated ||
+                  (isAuthenticated && user && user.role === "employer")) && (
+                  <a
+                    onClick={() => {
+                      navigate(isAuthenticated ? "/post-job" : "/login");
+                      setMobileMenuOpen(false);
+                    }}
+                    className={`block px-4 py-2 rounded-lg transition-colors cursor-pointer ${
+                      isActiveRoute("/post-job")
+                        ? "bg-primary-50 text-primary-600 font-semibold"
+                        : "text-secondary-600 hover:bg-gray-50 font-medium"
+                    }`}>
                     Đăng tin
                   </a>
                 )}
                 {!isAuthenticated && (
-                  <a
-                    href="/login"
-                    className="block px-4 py-2 text-center bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition-colors"
-                  >
+                  <button
+                    onClick={() => {
+                      navigate("/login");
+                      setMobileMenuOpen(false);
+                    }}
+                    className="block px-4 py-2 text-center bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition-colors w-full">
                     Đăng nhập
-                  </a>
+                  </button>
                 )}
               </div>
             </motion.div>

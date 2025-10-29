@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axiosIntance from "../../utils/axiosInstance";
+import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
 import StatCard from "../../components/ui/StatCard";
@@ -18,7 +18,7 @@ const EmployerDashboard = () => {
   const getDashboardOverview = async () => {
     try {
       setIsLoading(true);
-      const response = await axiosIntance.get(API_PATHS.DASHBOARD.OVERVIEW);
+      const response = await axiosInstance.get(API_PATHS.DASHBOARD.OVERVIEW);
       if (response.status === 200) {
         setDashboardData(response.data);
       }
@@ -61,7 +61,7 @@ const EmployerDashboard = () => {
               value={dashboardData?.counts?.totalHired || 0}
               icon={CheckCircle2}
               trend={true}
-              trendValue={`${dashboardData?.counts?.trend?.totlaHired || 0}%`}
+              trendValue={`${dashboardData?.counts?.trend?.totalHires || 0}%`}
               color="purple"
             />
           </div>
